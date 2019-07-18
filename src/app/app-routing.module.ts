@@ -5,7 +5,8 @@ import {Home}  from './home/index';
 import { NewFeeds } from './newfeeds/index';
 
 const routes: Routes = [
-    {path: '', component: Home, pathMatch: 'full'},
+    // {path: '', component: Home, pathMatch: 'full'},
+    {path: '', component: NewFeeds, pathMatch: 'full'},
     {path: 'newfeeds', component: NewFeeds},
 ];
 

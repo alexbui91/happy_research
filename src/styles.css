@@ -1,1 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+.required{
+    color: #f92552;
+    font-size: 7px;
+}
+.has-error-line{
+    color:  #f92552;
+    font-size:13px;
+    margin-left: 5px
+}
+.read-more{
+    width: 100%;
+    text-align: center;
+    user-select: none;
+}
+.read-more:hover{
+    cursor: pointer;
+}
+.hentry-inner{
+    height: 183px;
+    overflow: hidden;
+}
+.hentry-inner.post-read-more{
+    height: auto
+}
+.hentry.post p{
+    margin: 10px 0;
+}
+.read-more-wrapper{
+    padding-top: 10px
+}
+.paper-form-wrapper .form-control, .paper-form-wrapper .btn{
+    padding: 0.6rem
+}
+.paper-form-wrapper .form-group{
+    margin-bottom: 0.6rem
+}
+.paper-form-wrapper label{
+    font-weight: bold;
+}
+.author-thumb img {
+    width: 36px;
+}
+.w-friend-pages-added .full-notification-event {
+    max-width: 100%;
+}
+.full-notification-event .count-down{
+    font-size: 14px;
+    font-weight: bold;
+}
+.full-notification-event p{
+    margin: 5px;
+}
+.conference-wrapper-list{
+    height: 500px;
+    overflow: auto
+}
