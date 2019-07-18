@@ -6,10 +6,13 @@ Flask-RESTful extension."""
 from flask import Flask, jsonify, abort, make_response
 from flask_restful import Api, Resource, reqparse, fields, marshal
 from flask_httpauth import HTTPBasicAuth
+from flask_cors import CORS
 import pymysql
 from datetime import datetime
 
 app = Flask(__name__, static_url_path="")
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+#CORS(app)
 api = Api(app)
 auth = HTTPBasicAuth()
 
@@ -29,17 +32,17 @@ class Database:
         return result
 
     def list_papers(self):
-        self.cur.execute("SELECT id, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id FROM paper ORDER BY research_id, read_by, read_date DESC")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.keys, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id ORDER BY research_id, read_by, read_date DESC")
         result = self.cur.fetchall()
         return result
 
     def list_papers_by_researcher(self, rid):
-        self.cur.execute("SELECT id, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id FROM paper WHERE read_by='" + rid + "' ORDER BY read_date DESC")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.keys, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE read_by='" + rid + "' ORDER BY read_date DESC")
         result = self.cur.fetchall()
         return result
 
     def get_paper(self, id):
-        self.cur.execute("SELECT id, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id FROM paper WHERE id='" + id + "'")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.keys, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE a.id='" + id + "'")
         result = self.cur.fetchall()
         return result
 
@@ -54,9 +57,9 @@ class Database:
              return True
         return False
 
-    def insert_paper(self, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id):
-        self.cur.execute("INSERT INTO paper(title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id) " +
-                          "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id))
+    def insert_paper(self, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys):
+        self.cur.execute("INSERT INTO paper(title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys) " +
+                          "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys))
         self.con.commit()
 
 @auth.verify_password
@@ -72,7 +75,7 @@ def unauthorized():
     return make_response(jsonify({'message': 'Unauthorized access'}), 403)
 
 class PaperListAPI(Resource):
-    decorators = [auth.login_required]
+    #decorators = [auth.login_required]
 
     def __init__(self):
         super(PaperListAPI, self).__init__()
@@ -90,7 +93,7 @@ class PaperListAPI(Resource):
 
 
 class PaperAPI(Resource):
-    decorators = [auth.login_required]
+    #decorators = [auth.login_required]
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -104,6 +107,7 @@ class PaperAPI(Resource):
         self.reqparse.add_argument('read_by', type=int, location='json')
         self.reqparse.add_argument('read_date', type=str, location='json')
         self.reqparse.add_argument('research_id', type=int, location='json')
+        self.reqparse.add_argument('keys', type=str, location='json')
         super(PaperAPI, self).__init__()
 
     def get(self, id):
@@ -126,7 +130,7 @@ class PaperAPI(Resource):
         if not inputs['read_date']:
             now = datetime.now()
             inputs['read_date'] = now.strftime('%Y/%m/%d %H:%M:%S')
-        db.insert_paper(inputs['title'], inputs['authors'], inputs['conference'], inputs['year'], inputs['affiliation'], inputs['comments'], inputs['abstract'], inputs['read_by'], inputs['read_date'], inputs['research_id'])
+        db.insert_paper(inputs['title'], inputs['authors'], inputs['conference'], inputs['year'], inputs['affiliation'], inputs['abstract'], inputs['comments'], inputs['read_by'], inputs['read_date'], inputs['research_id'], inputs['keys'])
         return {'success': 'true'}
 
     def delete(self, id):
@@ -137,7 +141,7 @@ class PaperAPI(Resource):
         return {'result': True}
 
 class ResearcherAPI(Resource):
-     decorators = [auth.login_required]
+     #decorators = [auth.login_required]
 
      def __init__(self):
          super(ResearcherAPI, self).__init__()
