@@ -13,4 +13,7 @@ export class AppComponent {
   constructor(private globals: Globals){
     // this.globals.isShowingHeader = true
   }
+  goToTop(){
+      window.scrollTo(0,0)
+  }
 }

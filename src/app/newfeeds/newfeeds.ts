@@ -2,7 +2,8 @@ import {Component, OnInit} from "@angular/core"
 import { Services } from '../app.services'
 import {Paper} from '../models/paper'
 import {PaperNotification} from '../models/paper.noti'
-
+import {ResearchModal} from '../components/research'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 @Component({
     templateUrl: "newfeeds.html",
 })
@@ -12,7 +13,7 @@ export class NewFeeds implements OnInit{
     paper: Paper = new Paper()
     papers: Array<any> = []
     paperNoti: PaperNotification = new PaperNotification()
-    constructor(private services: Services){
+    constructor(private services: Services, private rmodal: NgbModal){
         this.services.getNewFeeds().subscribe(
             res => {
                 if(res["papers"]){
@@ -91,6 +92,10 @@ export class NewFeeds implements OnInit{
         if(!p["active"])
             return p["strim_abstract"]
         return p["abstract"]
+    }
+
+    openResearchModal(){
+        const modalRef = this.rmodal.open(ResearchModal)
     }
     // load more papers
     loadMore(){

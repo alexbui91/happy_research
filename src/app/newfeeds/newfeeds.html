@@ -32,10 +32,21 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <label class="control-label">Keys (Separated by commas ",")</label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys" name="keys">
+                        <div class='row'>
+                            <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <label class="control-label">Keys (Separated by commas ",")</label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys" name="keys">
+                                </div>
+                            </div>
+                            <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <label class="control-label">Project (Belonging to)</label> <button class='btn btn-purple btn-circle' (click)="openResearchModal()"><i class='fa fa-plus'></i></button>
+                                <div class="form-group">
+                                    <select class="form-control">
+                                        <option value="{{r.research_id}}" *ngFor="let r of researches">{{r.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
     
                         <label class="control-label">Conference/Journal name <sup><i class='fa fa-asterisk required'></i></sup></label>
