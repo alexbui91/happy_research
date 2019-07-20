@@ -20,6 +20,9 @@ export class Services{
         return this.http.get(this.url + "/papers")
     }
 
+    getProfileFeeds(id: string){
+        return this.http.get(this.url + "/papers/" + id)
+    }
     login(data: object){
         // let params = new HttpParams();
         // params = params.append('username', "duclv");

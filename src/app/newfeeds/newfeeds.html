@@ -67,10 +67,8 @@
     
     <!-- ... end News Feed Form  -->		
 <div id="newsfeed-items-grid">
-    <div class="ui-block" *ngIf="!papers.length">
-        <article class="hentry post ">
-            <p>There are no contents or some errors may occur</p>
-        </article>
+    <div class="ui-block main-noti" *ngIf="!papers.length">
+        <p>There are no contents or some errors may occur</p>
     </div>
     <div class="ui-block" *ngFor="let p of papers">
 
@@ -80,7 +78,7 @@
                     <img src="assets/img/avatar10-sm.jpg" alt="author">
             
                     <div class="author-date">
-                        <a class="h6 post__author-name fn" href="#">{{p.fullname}}</a>
+                        <a class="h6 post__author-name fn" [routerLink]="['/profile', p.read_by]">{{p.fullname}}</a>
                         <div class="post__date">
                             <time class="published">
                                 {{p.read_date}}
