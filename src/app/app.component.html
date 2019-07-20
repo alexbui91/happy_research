@@ -341,9 +341,12 @@
 
 					<a href="#" class="view-all bg-primary">View All Notifications</a>
 				</div>
-			</div>
+            </div>
+            <button class='btn btn-outline-light login-box' *ngIf="!globals.token" (click)="openLoginModal()">
+                <i class='fa fa-user-alt'></i>  Sign in
+            </button>
 
-			<div class="author-page author vcard inline-items more">
+			<div class="author-page author vcard inline-items more"  *ngIf="globals.token">
 				<div class="author-thumb">
 					<img alt="author" src="assets/img/author-page.jpg" class="avatar">
 					<span class="icon-status online"></span>
@@ -376,7 +379,6 @@
 							</ul>
 
 						</div>
-
 					</div>
 				</div>
 				<a href="#" class="author-name fn">

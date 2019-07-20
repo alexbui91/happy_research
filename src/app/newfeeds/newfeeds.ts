@@ -21,6 +21,11 @@ export class NewFeeds implements OnInit{
                 }
             }
         )
+        this.services.getConferences().subscribe(
+            res => {
+                console.log(res)
+            }
+        )
     }
     ngOnInit(){
     }

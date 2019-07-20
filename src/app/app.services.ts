@@ -19,4 +19,17 @@ export class Services{
     getNewFeeds(){
         return this.http.get(this.url + "/papers")
     }
+
+    login(data: object){
+        return this.http.post(this.url + "/token", data)
+    }
+    checkToken(data: object){
+        return this.http.post(this.url + "/token", data)
+    }
+    logout(data: object){
+        return this.http.post(this.url + "/", data)
+    }
+    getConferences(){
+        return this.http.get(this.url + "/conf")
+    }
 }

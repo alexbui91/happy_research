@@ -12,13 +12,15 @@ import {NewFeeds} from './newfeeds/index'
 import { Globals } from './globals';
 
 import {ResearchModal} from './components/research'
+import {LoginModal} from './components/login_modal'
 
 @NgModule({
   declarations: [
     AppComponent,
     Home,
     NewFeeds,
-    ResearchModal
+    ResearchModal,
+    LoginModal
   ],
   imports: [
     BrowserModule,
@@ -29,6 +31,6 @@ import {ResearchModal} from './components/research'
   ],
   providers: [Globals],
   bootstrap: [AppComponent],
-  entryComponents: [ResearchModal]
+  entryComponents: [ResearchModal, LoginModal]
 })
 export class AppModule { }
