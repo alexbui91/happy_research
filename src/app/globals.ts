@@ -4,4 +4,7 @@ import {Injectable} from '@angular/core'
 export class Globals{
     isShowingHeader: Boolean = true
     page: string = ''
+    userId: string = ''
+    token: string = ''
+    duration: number = 600
 }

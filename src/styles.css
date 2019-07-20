@@ -1,1 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+
+button.calendar, button.calendar:active {
+    width: 2.75rem;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;
+    background-repeat: no-repeat;
+    background-size: 23px;
+    background-position: center;
+  }
+.required{
+    color: #f92552;
+    font-size: 7px;
+}
+.has-error-line{
+    color:  #f92552;
+    font-size:13px;
+    margin-left: 5px
+}
+.read-more{
+    width: 100%;
+    text-align: center;
+    user-select: none;
+}
+.read-more:hover{
+    cursor: pointer;
+}
+.hentry-inner{
+    height: 183px;
+    overflow: hidden;
+}
+.hentry-inner.post-read-more{
+    height: auto
+}
+.hentry.post p{
+    margin: 10px 0;
+}
+.read-more-wrapper{
+    padding-top: 10px
+}
+.paper-form-wrapper .form-control, .paper-form-wrapper .btn{
+    padding: 0.6rem
+}
+.paper-form-wrapper .form-group{
+    margin-bottom: 0.6rem
+}
+.paper-form-wrapper label{
+    font-weight: bold;
+}
+.author-thumb img {
+    width: 36px;
+}
+.w-friend-pages-added .full-notification-event {
+    max-width: 100%;
+}
+.full-notification-event .count-down{
+    font-size: 14px;
+    font-weight: bold;
+}
+.full-notification-event p{
+    margin: 5px;
+}
+.conference-wrapper-list{
+    height: 500px;
+    overflow: auto
+}
+.btn-circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 25px;
+    margin: 0;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 0px !important;
+    margin-left: 5px;
+}
+.paper-form-wrapper input.date-picker{
+    width: 100px;
+}
+.page-form-wrapper .calendar svg{
+    color: #858585;
+}
+
+.login-box{
+    margin-top: 15px;
+}

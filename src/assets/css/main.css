@@ -2895,12 +2895,13 @@ img {
 
 /*------------- #BUTTONS --------------*/
 .btn {
-  color: #fff;
+  /* color: #fff; */
   margin-bottom: 15px;
   position: relative; }
   .btn:hover {
     opacity: .8;
-    color: #fff; }
+    /* color: #fff;  */
+  }
   .btn:focus {
     box-shadow: none; }
   .btn.c-grey {
@@ -2910,7 +2911,9 @@ img {
   .btn.disabled, .btn:disabled {
     background-color: #9a9fbf;
     border-color: #9a9fbf; }
-
+.btn.btn-purple{
+    color: #FFF
+}
 .btn-transparent {
   background-color: transparent; }
 
@@ -3278,7 +3281,9 @@ input, .form-control {
   right: 20px;
   top: 50%;
   margin-top: -10px; }
-
+.label-floating .form-control{
+    height: auto
+}
 .has-success .form-control-success,
 .has-error .form-control-danger {
   background-image: none; }
