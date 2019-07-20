@@ -4,6 +4,8 @@ import {Paper} from '../models/paper'
 import {PaperNotification} from '../models/paper.noti'
 import {ResearchModal} from '../components/research'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+import { Globals } from '../globals'
+
 @Component({
     templateUrl: "newfeeds.html",
 })
@@ -13,17 +15,12 @@ export class NewFeeds implements OnInit{
     paper: Paper = new Paper()
     papers: Array<any> = []
     paperNoti: PaperNotification = new PaperNotification()
-    constructor(private services: Services, private rmodal: NgbModal){
+    constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
         this.services.getNewFeeds().subscribe(
             res => {
                 if(res["papers"]){
                     this.papers = res["papers"]
                 }
-            }
-        )
-        this.services.getConferences().subscribe(
-            res => {
-                console.log(res)
             }
         )
     }
