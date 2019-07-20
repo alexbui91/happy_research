@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import  {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http'
 
 const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json', "username": 'duclv', 'password': '123456'})
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,9 +21,8 @@ export class Services{
     }
 
     login(data: object){
-        // let params = new HttpParams();
-        // params = params.append('username', "duclv");
-        // params = params.append('password', "123456");
+        let authen = data["username"] + ":" + data["password"];
+        httpOptions.headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa(authen)});
         return this.http.post(this.url + "/token", data, {"headers": httpOptions.headers})
     }
     checkToken(data: object){
