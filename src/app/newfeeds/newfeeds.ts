@@ -14,12 +14,20 @@ export class NewFeeds implements OnInit{
     
     paper: Paper = new Paper()
     papers: Array<any> = []
+    researches: Array<any> = []
     paperNoti: PaperNotification = new PaperNotification()
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
         this.services.getNewFeeds().subscribe(
             res => {
                 if(res["papers"]){
                     this.papers = res["papers"]
+                }
+            }
+        )
+        this.services.getResearches().subscribe(
+            res => {
+                if(res["researches"]){
+                    this.researches = res["researches"]
                 }
             }
         )

@@ -14,7 +14,7 @@ export class Services{
     }
 
     submitPaper(data: object){
-        return this.http.post(this.url + "/paper" + "/0", data)
+        return this.http.post(this.url + "/paper/0", data)
     }
     getNewFeeds(){
         return this.http.get(this.url + "/papers")
@@ -34,7 +34,15 @@ export class Services{
     logout(data: object){
         return this.http.post(this.url + "/", data)
     }
+    
     getConferences(){
         return this.http.get(this.url + "/conf")
+    }
+
+    saveResearch(data: object){
+        return this.http.post(this.url + "/research/0", data)
+    }
+    getResearches(){
+        return this.http.get(this.url + "/research/0")
     }
 }

@@ -21,6 +21,9 @@ button.calendar, button.calendar:active {
     color: #f92552;
     font-size: 7px;
 }
+.paper-form-wrapper .form-group.has-error:after {
+    top: 7px;
+}
 .has-error-line{
     color:  #f92552;
     font-size:13px;
