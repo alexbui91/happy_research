@@ -30,6 +30,10 @@ export class AppComponent {
         }
     )
   }
+  logout(){
+      localStorage.clear()
+      window.location.reload()
+  }
   goToTop(){
       window.scrollTo(0,0)
   }
