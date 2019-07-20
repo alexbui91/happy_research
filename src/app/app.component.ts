@@ -14,6 +14,7 @@ export class AppComponent {
     title = 'happyresearch';
     conferences: Array<object> = []
   constructor(private globals: Globals, private rmodal: NgbModal, private services: Services){
+      this.globals.loadToken()
     this.services.getConferences().subscribe(
         res => {
             let obj = res["confs"]

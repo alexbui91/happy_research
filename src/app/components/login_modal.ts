@@ -42,6 +42,9 @@ export class LoginModal{
                         this.globals.token = res["token"]
                         this.globals.userId = res["id"]
                         this.globals.duration = res["duration"]
+                        this.globals.fullname = res["fullname"]
+                        this.globals.saveToken()
+                        this.loginModal.close()
                     }
                 },
                 error => {
