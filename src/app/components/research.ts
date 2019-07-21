@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Research} from '../models/research'
 import { ResearchNoti } from '../models/research.noti';
 import { Services } from '../app.services';
+import { Globals } from '../globals';
 @Component({
   selector: 'ngbd-modal-content',
   templateUrl: 'research_modal.html'
@@ -13,7 +14,7 @@ export class ResearchModal {
     startDate: object = {}
     endDate: object = {}
     researchNoti : ResearchNoti = new ResearchNoti()
-    constructor(public activeModal: NgbActiveModal, private services: Services) {
+    constructor(public activeModal: NgbActiveModal, private services: Services, private globals: Globals) {
 
     }
 
@@ -32,6 +33,9 @@ export class ResearchModal {
     }
     validatePaper() {
       let b = false
+      if(!this.globals.userId || !this.globals.token){
+        b = true
+      }
       if(!this.research.name){
           this.researchNoti.name = "Name must not be empty"
           b = true
@@ -57,6 +61,7 @@ export class ResearchModal {
     saveResearch(){
       let b = this.validatePaper()
       if(!b){
+        this.research.created_by = this.globals.userId
         this.research.start_date = this.getDate(this.startDate)
         this.research.end_date_plan = this.getDate(this.startDate)
         this.researchNoti = new ResearchNoti()
@@ -64,6 +69,7 @@ export class ResearchModal {
           res => {
               if(res["success"] == 'true'){
                   this.research = new Research()
+                  this.activeModal.close()
               }
           }
         )

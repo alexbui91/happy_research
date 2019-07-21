@@ -37,8 +37,10 @@ export class NewFeeds implements OnInit{
 
     // validate paper submission form
     validatePaper() {
-        console.log(this.paper)
         let b = false
+        if(!this.globals.userId || this.globals.token){
+            b = true
+        }
         if(!this.paper.title){
             this.paperNoti.title = "Title must not be empty"
             b = true
@@ -80,6 +82,7 @@ export class NewFeeds implements OnInit{
     savePaper(){
         let obj = JSON.parse(JSON.stringify(this.paper))
         if(!this.validatePaper()){
+            this.paper.read_by = this.globals.userId
             this.paperNoti = new PaperNotification()
             this.services.submitPaper(obj).subscribe(
                 res => {
