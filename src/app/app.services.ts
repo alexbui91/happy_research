@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import  {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http'
+import  {HttpClient, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http'
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -18,9 +18,7 @@ export class Services{
     }
     removePaper(id: string, uid: string){
         console.log(uid)
-        let params = new HttpParams()
-        params = params.append("read_by", uid)
-        let options = {params: params, headers: httpOptions.headers}
+        let options = {body: {read_by: parseInt(uid)}, headers: httpOptions.headers}
         return this.http.delete(this.url + "/paper/" + id, options)
     }
     getNewFeeds(id: string){

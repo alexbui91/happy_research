@@ -140,8 +140,11 @@ export class NewFeeds{
             p["clicked_delete"] = true
             this.services.removePaper(id, uid).subscribe(
                 res => {
-                    if(!res["error"])
+                    if(!res["error"]){
                         this.papers.splice(idx, 1)
+                    }else{
+                        p["clicked_delete"] = false
+                    }
                 },
                 error => {
                     p["clicked_delete"] = false
