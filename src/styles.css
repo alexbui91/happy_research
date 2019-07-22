@@ -103,6 +103,9 @@ button.calendar, button.calendar:active {
     margin-top: 15px;
 }
 
+.main-calendar{
+    border: none
+}
 .main-calendar ngb-datepicker{
     width: 100%
 }

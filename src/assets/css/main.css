@@ -2768,7 +2768,9 @@ img {
   display: table;
   width: 100%;
   position: relative;
-  border-radius: 5px 5px 0 0; }
+  border-radius: 5px 5px 0 0; 
+  background:#f5f6f7
+}
   .ui-block-title .more {
     padding-left: 25px;
     text-align: right;
@@ -3256,7 +3258,8 @@ button:hover {
 
 /*------------- #FORMS --------------*/
 label.control-label {
-  color: #888da8; }
+  color: #212529;
+  }
 
 textarea {
   min-height: 132px; }

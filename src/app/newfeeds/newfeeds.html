@@ -1,10 +1,10 @@
-<div class="ui-block">
+<div class="ui-block" *ngIf="globals.token">
     
     <!-- News Feed Form  -->
     <div class="ui-block-title">
         <h6 class="title">Create new paper summary</h6>
     </div>
-    <div class="ui-block-content paper-form-wrapper" *ngIf="globals.token">
+    <div class="ui-block-content paper-form-wrapper">
         <div class="row">
             <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <label class="control-label">Paper Title <sup><i class='fa fa-asterisk required'></i></sup></label>
