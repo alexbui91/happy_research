@@ -135,9 +135,10 @@ export class NewFeeds{
     removePaper(idx: number, p: any){
         let read_by = p["read_by"]
         let id = p["id"]
+        let uid = p["read_by"]
         if(!p["clicked_delete"] && read_by == parseInt(this.globals.userId)){
             p["clicked_delete"] = true
-            this.services.removePaper(id).subscribe(
+            this.services.removePaper(id, uid).subscribe(
                 res => {
                     if(!res["error"])
                         this.papers.splice(idx, 1)
