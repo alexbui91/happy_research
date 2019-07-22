@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core"
+import {Component, OnInit, Input} from "@angular/core"
 import { Services } from '../app.services'
 import {Paper} from '../models/paper'
 import {PaperNotification} from '../models/paper.noti'
@@ -7,23 +7,21 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { Globals } from '../globals'
 
 @Component({
+    selector: "newfeeds",
     templateUrl: "newfeeds.html",
 })
 
-export class NewFeeds implements OnInit{
-    
+export class NewFeeds{
+    viewId: string = ""
+    auto: boolean = true
     paper: Paper = new Paper()
     papers: Array<any> = []
     researches: Array<any> = []
     paperNoti: PaperNotification = new PaperNotification()
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
-        this.services.getNewFeeds().subscribe(
-            res => {
-                if(res["papers"]){
-                    this.papers = res["papers"]
-                }
-            }
-        )
+        if(this.auto){
+            this.getPapers()
+        }
         this.services.getResearches().subscribe(
             res => {
                 if(res["researches"]){
@@ -32,9 +30,20 @@ export class NewFeeds implements OnInit{
             }
         )
     }
-    ngOnInit(){
-    }
 
+    getPapers(){
+        this.services.getNewFeeds(this.viewId).subscribe(
+            res => {
+                if(res["papers"]){
+                    let obj = res["papers"]
+                    for(let x in obj){
+                        obj[x]["showing_abstract"] = this.strimParagraph(obj[x])
+                    }
+                    this.papers = obj
+                }
+            }
+        )
+    }
     // validate paper submission form
     validatePaper() {
         let b = false
@@ -80,9 +89,9 @@ export class NewFeeds implements OnInit{
 
     // submit summarization
     savePaper(){
-        let obj = JSON.parse(JSON.stringify(this.paper))
         if(!this.validatePaper()){
             this.paper.read_by = this.globals.userId
+            let obj = JSON.parse(JSON.stringify(this.paper))
             this.paperNoti = new PaperNotification()
             this.services.submitPaper(obj).subscribe(
                 res => {
@@ -94,6 +103,10 @@ export class NewFeeds implements OnInit{
         }
     }
     // strim shorter paragraph to display
+    showMore(p: any){
+        p["showing_abstract"] = this.strimParagraph(p)
+        p["active"] = !p["active"]
+    }
     strimParagraph(p: any){
         if(!p["strim_abstract"]){
             let para = p["abstract"]
@@ -113,5 +126,15 @@ export class NewFeeds implements OnInit{
     // load more papers
     loadMore(){
 
+    }
+    removePaper(id: string, read_by: number){
+        if(read_by == parseInt(this.globals.userId)){
+            this.services.removePaper(id)
+        }
+    }
+
+    editPaper(p: any, read_by: string){
+        if(read_by == this.globals.userId){
+        }
     }
 }

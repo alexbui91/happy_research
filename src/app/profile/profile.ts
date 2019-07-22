@@ -1,55 +1,36 @@
-import {Component, OnInit} from "@angular/core"
+import {Component, ViewChild, AfterViewInit} from "@angular/core"
 import { Services } from '../app.services'
-import {Paper} from '../models/paper'
 import {PaperNotification} from '../models/paper.noti'
-import {ResearchModal} from '../components/research'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { Globals } from '../globals'
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router'
+import { NewFeeds } from '../newfeeds/index'
 
 @Component({
     templateUrl: "profile.html",
 })
 
-export class Profile implements OnInit{
+export class Profile implements AfterViewInit{
     
     view_id : string = ""
-    papers: Array<any> = []
-    paperNoti: PaperNotification = new PaperNotification()
+    user: object = {}
+    @ViewChild(NewFeeds, {static: false}) newfeeds: NewFeeds
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals, private route: ActivatedRoute){
         this.route.params.subscribe((params: Params) => {
             this.view_id = params["id"]
-            this.services.getProfileFeeds(this.view_id).subscribe(
+            this.services.getUserInfo(this.view_id).subscribe(
                 res => {
-                    if(res["papers"]){
-                        this.papers = res["papers"]
-                    }
+                    this.user["id"] = res["researcher"]["id"]
+                    this.user["fullname"] = res["researcher"]["fullname"]
                 }
             )
         })
     }
-    ngOnInit(){
+
+    ngAfterViewInit(){
+        this.newfeeds.auto = false
+        this.newfeeds.viewId = this.view_id
+        this.newfeeds.getPapers()
     }
 
-    // strim shorter paragraph to display
-    strimParagraph(p: any){
-        if(!p["strim_abstract"]){
-            let para = p["abstract"]
-            let a = para.split(" ")
-            let l = a.length > 18 ? 18 : a.length
-            a = a.slice(0, l)
-            p["strim_abstract"] = a.join(" ")
-        }
-        if(!p["active"])
-            return p["strim_abstract"]
-        return p["abstract"]
-    }
-
-    openResearchModal(){
-        const modalRef = this.rmodal.open(ResearchModal)
-    }
-    // load more papers
-    loadMore(){
-
-    }
 }

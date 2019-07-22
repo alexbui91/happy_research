@@ -109,3 +109,9 @@ button.calendar, button.calendar:active {
 .conf-title{
     font-size: 15px;
 }
+.link-button{
+    user-select: none;
+}
+.link-button:hover{
+    cursor: pointer;
+}

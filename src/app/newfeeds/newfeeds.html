@@ -86,13 +86,14 @@
                         </div>
                     </div>
             
-                    <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+                    <div class="more" *ngIf="globals.userId == p.read_by">
+                        <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
                         <ul class="more-dropdown">
-                            <li>
-                                <a href="#">Edit Post</a>
+                            <li class='link-button'>
+                                <a (click)="editPaper(p.id, p.read_by)">Edit Post</a>
                             </li>
-                            <li>
-                                <a href="#">Delete Post</a>
+                            <li class='link-button'>
+                                <a (click)="removePaper(p.id, p.read_by)">Delete Post</a>
                             </li>
                         </ul>
                     </div>
@@ -102,11 +103,11 @@
                 <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b> {{p.title}}</p>
                 <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{p.authors}}</p>
                 <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{p.year}}</p>
-                <p><i class="fa fa-file-alt"></i>&nbsp;<b>Abstract:</b> {{strimParagraph(p)}}</p>
+                <p><i class="fa fa-file-alt"></i>&nbsp;<b>Abstract:</b> {{p.showing_abstract}}</p>
                 <p *ngIf="p.active && p.comments"><i class="fa fa-comments"></i> &nbsp;<b>Comments: </b>{{p.comments}}</p>
             </div>
             <div class="post-additional-info inline-items read-more-wrapper">
-                <div class="read-more" (click)="p.active = !p.active">
+                <div class="read-more" (click)="showMore(p)">
                     <span *ngIf="!p.active"><i class="fa fa-angle-down"></i> Show more</span>
                     <span *ngIf="p.active"><i class="fa fa-angle-up"></i> Show less</span>
                 </div>

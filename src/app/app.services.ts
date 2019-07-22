@@ -16,13 +16,16 @@ export class Services{
     submitPaper(data: object){
         return this.http.post(this.url + "/paper/0", data)
     }
-    getNewFeeds(){
-        return this.http.get(this.url + "/papers")
+    removePaper(id: string){
+        return this.http.delete(this.url + "/paper/" + id)
+    }
+    getNewFeeds(id: string){
+        let path = this.url + "/papers"
+        if(id)
+            path += "/" + id
+        return this.http.get(path)
     }
 
-    getProfileFeeds(id: string){
-        return this.http.get(this.url + "/papers/" + id)
-    }
     login(data: object){
         let authen = data["username"] + ":" + data["password"];
         httpOptions.headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa(authen)});
@@ -44,5 +47,8 @@ export class Services{
     }
     getResearches(){
         return this.http.get(this.url + "/research/0")
+    }
+    getUserInfo(id: string){
+        return this.http.get(this.url + "/researcher/" + id)
     }
 }
