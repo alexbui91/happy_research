@@ -1,5 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-
+.page-has-left-panels {
+    padding-left: 0
+}
+.header .page-title a{
+    color: #FFF
+}
+.main-noti{
+    text-align: center;
+    padding-top: 15px;
+    font-weight: bold;
+}
 button.calendar, button.calendar:active {
     width: 2.75rem;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;
@@ -10,6 +20,9 @@ button.calendar, button.calendar:active {
 .required{
     color: #f92552;
     font-size: 7px;
+}
+.paper-form-wrapper .form-group.has-error:after {
+    top: 7px;
 }
 .has-error-line{
     color:  #f92552;
@@ -40,11 +53,17 @@ button.calendar, button.calendar:active {
 .paper-form-wrapper .form-control, .paper-form-wrapper .btn{
     padding: 0.6rem
 }
+.paper-form-wrapper select.form-control{
+    padding: 5px 10px
+}
 .paper-form-wrapper .form-group{
     margin-bottom: 0.6rem
 }
 .paper-form-wrapper label{
     font-weight: bold;
+}
+.paper-form-wrapper  .btn.full-width{
+    margin-bottom: 0
 }
 .author-thumb img {
     width: 36px;
@@ -82,4 +101,23 @@ button.calendar, button.calendar:active {
 
 .login-box{
     margin-top: 15px;
+}
+
+.main-calendar ngb-datepicker{
+    width: 100%
+}
+.main-calendar .ngb-dp-month{
+    width: 100%
+}
+.main-calendar .ngb-dp-month .ngb-dp-weekday, .main-calendar .ngb-dp-month .ngb-dp-day{
+    width: calc(100%/7)
+}
+.conf-title{
+    font-size: 15px;
+}
+.link-button{
+    user-select: none;
+}
+.link-button:hover{
+    cursor: pointer;
 }

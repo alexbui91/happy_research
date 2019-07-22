@@ -1,267 +1,130 @@
-<div class="row">
-
-    <!-- Main Content -->
-
-    <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-
-        <div class="ui-block">
-            
-            <!-- News Feed Form  -->
-
-            <div class="ui-block-content paper-form-wrapper">
-                <div class="row">
-                    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <label class="control-label">Paper Title <sup><i class='fa fa-asterisk required'></i></sup></label>
-                        <label class='has-error-line' *ngIf="paperNoti.title"> - {{ paperNoti.title }}</label>
-                        <div class="form-group" [ngClass]="{'has-error': paperNoti.title}">
-                            <input class="form-control" type="text" placeholder="Ex. A Deep learning approach for ..." [(ngModel)]="paper.title" name="title">
-                        </div>
-                        <div class='row'>
-                            <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                <label class="control-label">Authors (Separated by commas ",") <sup><i class='fa fa-asterisk required'></i></sup></label>
-                                <label class='has-error-line' *ngIf="paperNoti.authors"> - {{ paperNoti.authors }}</label>
-                                <div class="form-group" [ngClass]="{'has-error': paperNoti.authors}">
-                                    <input type="text" class="form-control" placeholder="Ex. Andrew Ng., Ian Goodfellow" [(ngModel)]="paper.authors" name="authors">
-                                </div>
-                            </div>
-                            <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                <label class="control-label">Year of publication <sup><i class='fa fa-asterisk required'></i></sup></label>
-                                <label class='has-error-line' *ngIf="paperNoti.year"> - {{ paperNoti.year }}</label>
-                                <div class="form-group" [ngClass]="{'has-error': paperNoti.year}">
-                                    <input type="text" class="form-control" placeholder="Ex. 2019" [(ngModel)]="paper.year" name="year">
-                                </div>
-                            </div>
-                        </div>
-                        <div class='row'>
-                            <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                <label class="control-label">Keys (Separated by commas ",")</label>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys" name="keys">
-                                </div>
-                            </div>
-                            <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                <label class="control-label">Project (Belonging to)</label> <button class='btn btn-purple btn-circle' (click)="openResearchModal()"><i class='fa fa-plus'></i></button>
-                                <div class="form-group">
-                                    <select class="form-control">
-                                        <option value="{{r.research_id}}" *ngFor="let r of researches">{{r.name}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+<div class="ui-block">
     
-                        <label class="control-label">Conference/Journal name <sup><i class='fa fa-asterisk required'></i></sup></label>
-                        <label class='has-error-line' *ngIf="paperNoti.conference"> - {{ paperNoti.conference }}</label>
-                        <div class="form-group" [ngClass]="{'has-error': paperNoti.conference}">
-                            <input type="text" class="form-control" placeholder="Ex. ICDE or International Conference of Data Engineering" [(ngModel)]="paper.conference" name="conference">
+    <!-- News Feed Form  -->
+    <div class="ui-block-title">
+        <h6 class="title">Create new paper summary</h6>
+    </div>
+    <div class="ui-block-content paper-form-wrapper" *ngIf="globals.token">
+        <div class="row">
+            <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <label class="control-label">Paper Title <sup><i class='fa fa-asterisk required'></i></sup></label>
+                <label class='has-error-line' *ngIf="paperNoti.title"> - {{ paperNoti.title }}</label>
+                <div class="form-group" [ngClass]="{'has-error': paperNoti.title}">
+                    <input class="form-control" type="text" placeholder="Ex. A Deep learning approach for ..." [(ngModel)]="paper.title" name="title">
+                </div>
+                <div class='row'>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Authors <sup><i class='fa fa-asterisk required'></i></sup></label>
+                        <label class='has-error-line' *ngIf="paperNoti.authors"> - {{ paperNoti.authors }}</label>
+                        <div class="form-group" [ngClass]="{'has-error': paperNoti.authors}">
+                            <input type="text" class="form-control" placeholder="Ex. Andrew Ng., Ian Goodfellow" [(ngModel)]="paper.authors" name="authors">
                         </div>
-
-                        <label class="control-label">Abstract <sup><i class='fa fa-asterisk required'></i></sup></label>
-                        <label class='has-error-line' *ngIf="paperNoti.abstract"> - {{ paperNoti.abstract }}</label>
-                        <div class="form-group" [ngClass]="{'has-error': paperNoti.abstract}">
-                            <textarea class="form-control" placeholder="Paste the abstract of the paper here" [(ngModel)]="paper.abstract" name="abstract"></textarea>
+                    </div>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Year of publication <sup><i class='fa fa-asterisk required'></i></sup></label>
+                        <label class='has-error-line' *ngIf="paperNoti.year"> - {{ paperNoti.year }}</label>
+                        <div class="form-group" [ngClass]="{'has-error': paperNoti.year}">
+                            <input type="text" class="form-control" placeholder="Ex. 2019" [(ngModel)]="paper.year" name="year">
                         </div>
-
-                        <label class="control-label">Comments</label>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Keys</label>
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="You can tell your own ideas" [(ngModel)]="paper.comments" name="comments"></textarea>
+                            <input type="text" class="form-control" placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys" name="keys">
                         </div>
-                        <button (click)="savePaper()" class="btn btn-purple btn-lg full-width">Submit<div class="ripple-container"></div></button>
+                    </div>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Project/Research</label> <button class='btn btn-purple btn-circle' (click)="openResearchModal()"><i class='fa fa-plus'></i></button>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option value="{{r.research_id}}" *ngFor="let r of researches">{{r.name}}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
+                <label class="control-label">Conference/Journal name <sup><i class='fa fa-asterisk required'></i></sup></label>
+                <label class='has-error-line' *ngIf="paperNoti.conference"> - {{ paperNoti.conference }}</label>
+                <div class="form-group" [ngClass]="{'has-error': paperNoti.conference}">
+                    <input type="text" class="form-control" placeholder="Ex. ICDE or International Conference of Data Engineering" [(ngModel)]="paper.conference" name="conference">
+                </div>
+
+                <label class="control-label">Abstract <sup><i class='fa fa-asterisk required'></i></sup></label>
+                <label class='has-error-line' *ngIf="paperNoti.abstract"> - {{ paperNoti.abstract }}</label>
+                <div class="form-group" [ngClass]="{'has-error': paperNoti.abstract}">
+                    <textarea class="form-control" placeholder="Paste the abstract of the paper here" [(ngModel)]="paper.abstract" name="abstract"></textarea>
+                </div>
+
+                <label class="control-label">Comments</label>
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="You can tell your own ideas" [(ngModel)]="paper.comments" name="comments"></textarea>
+                </div>
+                <button (click)="savePaper()" class="btn btn-purple btn-lg full-width">Submit<div class="ripple-container"></div></button>
             </div>
         </div>
+    </div>
+</div>
+    
+    <!-- ... end News Feed Form  -->		
+<div id="newsfeed-items-grid">
+    <div class="ui-block main-noti" *ngIf="!papers.length">
+        <p>There are no contents or some errors may occur</p>
+    </div>
+    <div class="ui-block" *ngFor="let p of papers; let i = index">
+
+        <article class="hentry post">
+            <div class='hentry-inner' [ngClass]="{'post-read-more': p.active}">
+                <div class="post__author author vcard inline-items">
+                    <img src="assets/img/author-page.jpg" alt="author">
             
-            <!-- ... end News Feed Form  -->		
-
-        <div id="newsfeed-items-grid">
-
-            <div class="ui-block" *ngFor="let p of papers">
-
-                <article class="hentry post">
-                    <div class='hentry-inner' [ngClass]="{'post-read-more': p.active}">
-                        <div class="post__author author vcard inline-items">
-                            <img src="assets/img/avatar10-sm.jpg" alt="author">
-                    
-                            <div class="author-date">
-                                <a class="h6 post__author-name fn" href="#">{{p.fullname}}</a>
-                                <div class="post__date">
-                                    <time class="published">
-                                        {{p.read_date}}
-                                    </time>
-                                </div>
-                            </div>
-                    
-                            <div class="more"><svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-                                <ul class="more-dropdown">
-                                    <li>
-                                        <a href="#">Edit Post</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Delete Post</a>
-                                    </li>
-                                </ul>
-                            </div>
-                    
-                        </div>
-                    
-                        <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b> {{p.title}}</p>
-                        <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{p.authors}}</p>
-                        <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{p.year}}</p>
-                        <p><i class="fa fa-file-alt"></i>&nbsp;<b>Abstract:</b> {{strimParagraph(p)}}</p>
-                        <p *ngIf="p.active && p.comments"><i class="fa fa-comments"></i> &nbsp;<b>Comments: </b>{{p.comments}}</p>
-                    </div>
-                    <div class="post-additional-info inline-items read-more-wrapper">
-                        <div class="read-more" (click)="p.active = !p.active">
-                            <span *ngIf="!p.active"><i class="fa fa-angle-down"></i> Show more</span>
-                            <span *ngIf="p.active"><i class="fa fa-angle-up"></i> Show less</span>
+                    <div class="author-date">
+                        <a class="h6 post__author-name fn" [routerLink]="['/profile', p.read_by]">{{p.fullname}}</a>
+                        <div class="post__date">
+                            <time class="published">
+                                {{p.read_date}}
+                            </time>
                         </div>
                     </div>
-                </article>
-                
-                <!-- Comments -->
-                
-                <!-- ... end Comment Form  -->
+            
+                    <div class="more" *ngIf="globals.userId == p.read_by">
+                        <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+                        <ul class="more-dropdown">
+                            <li class='link-button'>
+                                <a (click)="editPaper(i, p)">Edit Post</a>
+                            </li>
+                            <li class='link-button'>
+                                <a (click)="removePaper(i, p)">Delete Post</a>
+                            </li>
+                        </ul>
+                    </div>
+            
+                </div>
+            
+                <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b> {{p.title}}</p>
+                <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{p.authors}}</p>
+                <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{p.year}}</p>
+                <p><i class="fa fa-file-alt"></i>&nbsp;<b>Abstract:</b> {{p.showing_abstract}}</p>
+                <p *ngIf="p.active && p.comments"><i class="fa fa-comments"></i> &nbsp;<b>Comments: </b>{{p.comments}}</p>
             </div>
-
-        </div>
-
-        <button id="load-more-button" class="btn btn-control btn-more" (click)="loadMore()">
-            <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
-        </button>
-
-    </main>
-
-    <!-- ... end Main Content -->
-
-
-    <!-- Left Sidebar -->
-
-    <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
-
-        <div class="ui-block">
-            
-            <!-- W-Calendar -->
-            
-            <div class="w-calendar">
-                <div class="calendar">
-                    <header>
-                        <h6 class="month">May</h6>
-                    </header>
-                    <table>
-                        <thead>
-                        <tr><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td><td>San</td></tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td data-month="12" data-day="1">1</td>
-                            <td data-month="12" data-day="2">
-                                2
-                            </td>
-                            <td data-month="12" data-day="3">3</td>
-                            <td data-month="12" data-day="4">4</td>
-                            <td data-month="12" data-day="5">5</td>
-                            <td data-month="12" data-day="6">6</td>
-                            <td data-month="12" data-day="7">7</td>
-                        </tr>
-                        <tr>
-                            <td data-month="12" data-day="8">8</td>
-                            <td data-month="12" data-day="9">9</td>
-                            <td data-month="12" data-day="10">10</td>
-                            <td data-month="12" data-day="11">11</td>
-                            <td data-month="12" data-day="12">12</td>
-                            <td data-month="12" data-day="13">13</td>
-                            <td data-month="12" data-day="14">14</td>
-                        </tr>
-                        <tr>
-                            <td data-month="12" data-day="15">15</td>
-                            <td data-month="12" data-day="16">16</td>
-                            <td data-month="12" data-day="17">17</td>
-                            <td data-month="12" data-day="18">18</td>
-                            <td data-month="12" data-day="19">19</td>
-                            <td data-month="12" data-day="20">20</td>
-                            <td data-month="12" data-day="21">21</td>
-                        </tr>
-                        <tr>
-                            <td data-month="12" data-day="22">22</td>
-                            <td data-month="12" data-day="23">23</td>
-                            <td data-month="12" data-day="24">24</td>
-                            <td data-month="12" data-day="25">25</td>
-                            <td data-month="12" data-day="26">26</td>
-                            <td data-month="12" data-day="27">27</td>
-                            <td data-month="12" data-day="28">28</td>
-                        </tr>
-                        <tr>
-                            <td data-month="12" data-day="29">29</td>
-                            <td data-month="12" data-day="30">30</td>
-                            <td data-month="12" data-day="31">31</td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="post-additional-info inline-items read-more-wrapper">
+                <div class="read-more" (click)="showMore(p)">
+                    <span *ngIf="!p.active"><i class="fa fa-angle-down"></i> Show more</span>
+                    <span *ngIf="p.active"><i class="fa fa-angle-up"></i> Show less</span>
                 </div>
             </div>
-            
-            
-            <!-- ... end W-Calendar -->			</div>
-
-        <div class="ui-block">
-            <div class="ui-block-title">
-                <h6 class="title">Conference Alerts</h6>
-                <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
-            </div>
-
-            <!-- W-Friend-Pages-Added -->
-            
-            <ul class="widget w-friend-pages-added notification-list conference-wrapper-list">
-                <li class="inline-items" *ngFor="let item of [1,2,3,4,5]">
-                    <div class="full-notification-event">
-                        <p><a href="#" class="h6 notification-friend">2019 Conference on Neural Information Processing Systems will begin on</a></p>
-                        <p class='count-down'><i class="fa fa-stopwatch"></i> 03 months 22h 28m 10s</p>
-                        <p><i class="fa fa-clock"></i> Deadline: Sat Jul 27 2019 15:59:59 GMT+0900</p>
-                        <p><i class="fa fa-calendar-alt"></i> March 2-5, 2020. <i class="fa fa-map-marker-alt"></i> Snowmass village, Colorado, USA.</p>
-                    </div>
-                </li>
-            </ul>
-            
-            <!-- .. end W-Friend-Pages-Added -->
-        </div>
-    </aside>
-
-    <!-- ... end Left Sidebar -->
-
-
-    <!-- Right Sidebar -->
-
-    <aside class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12">
-
-        <div class="ui-block">
-
-            <div class="ui-block-title">
-                <h6 class="title">Lab's Notices</h6>
-                <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
-            </div>
-
-            
-            <!-- W-Activity-Feed -->
-            
-            <ul class="widget w-activity-feed notification-list">
-                <li *ngFor="let item of [1,2,3,4,5]">
-                    <div class="author-thumb">
-                        <img src="assets/img/avatar49-sm.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-                        <a href="#" class="h6 notification-friend">Dongkyu Lee:</a> we will have a lab meeting this week on Sat 20th, 2019.
-                        <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
-                    </div>
-                </li>
+        </article>
         
-            
-            </ul>
-            
-            <!-- .. end W-Activity-Feed -->
-        </div>
-
-    </aside>
-
-    <!-- ... end Right Sidebar -->
+        <!-- Comments -->
+        
+        <!-- ... end Comment Form  -->
+    </div>
 
 </div>
+
+<button id="load-more-button" class="btn btn-control btn-more" (click)="loadMore()">
+    <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+</button>
+
+<!-- ... end Main Content -->
