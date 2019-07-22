@@ -62,6 +62,9 @@ button.calendar, button.calendar:active {
 .paper-form-wrapper label{
     font-weight: bold;
 }
+.paper-form-wrapper  .btn.full-width{
+    margin-bottom: 0
+}
 .author-thumb img {
     width: 36px;
 }

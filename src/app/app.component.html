@@ -233,13 +233,9 @@
 
         <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
 
-            <div class="ui-block main-calendar">
-                <ngb-datepicker #cal [(ngModel)]="calendar" (navigate)="date = $event.next"></ngb-datepicker>
-            </div>
             <div class="ui-block">
                 <div class="ui-block-title">
                     <h6 class="title">Conference Alerts</h6>
-                    <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
                 </div>
         
                 <!-- W-Friend-Pages-Added -->
@@ -257,6 +253,9 @@
                 
                 <!-- .. end W-Friend-Pages-Added -->
             </div>
+            <div class="ui-block main-calendar">
+                <ngb-datepicker #cal [(ngModel)]="calendar" (navigate)="date = $event.next"></ngb-datepicker>
+            </div>
         </aside>
             <!-- ... end Left Sidebar -->
         <!-- Right Sidebar -->
@@ -267,7 +266,6 @@
 
                 <div class="ui-block-title">
                     <h6 class="title">Lab's Notices</h6>
-                    <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
                 </div>
 
                 
