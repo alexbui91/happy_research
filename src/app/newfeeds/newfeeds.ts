@@ -95,12 +95,17 @@ export class NewFeeds{
             this.paperNoti = new PaperNotification()
             this.services.submitPaper(obj).subscribe(
                 res => {
-                    if(res["success"] == 'true'){
+                    if(res["num_row"] == '1'){
+                        this.synchronizeLocalPaper(this.paper)
                         this.paper = new Paper()
                     }
                 }
             )
         }
+    }
+
+    synchronizeLocalPaper(p: Paper){
+        this.getPapers()
     }
     // strim shorter paragraph to display
     showMore(p: any){

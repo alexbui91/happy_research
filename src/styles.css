@@ -53,6 +53,9 @@ button.calendar, button.calendar:active {
 .paper-form-wrapper .form-control, .paper-form-wrapper .btn{
     padding: 0.6rem
 }
+.paper-form-wrapper select.form-control{
+    padding: 5px 10px
+}
 .paper-form-wrapper .form-group{
     margin-bottom: 0.6rem
 }
