@@ -38,7 +38,7 @@ export class NewFeeds implements OnInit{
     // validate paper submission form
     validatePaper() {
         let b = false
-        if(!this.globals.userId || this.globals.token){
+        if(!this.globals.userId || !this.globals.token){
             b = true
         }
         if(!this.paper.title){
