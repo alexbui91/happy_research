@@ -17,6 +17,7 @@ export class Services{
         return this.http.post(this.url + "/paper/0", data)
     }
     removePaper(id: string){
+        console.log("delete")
         return this.http.delete(this.url + "/paper/" + id)
     }
     getNewFeeds(id: string){

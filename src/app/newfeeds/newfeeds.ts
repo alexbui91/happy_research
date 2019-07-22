@@ -127,13 +127,24 @@ export class NewFeeds{
     loadMore(){
 
     }
-    removePaper(id: string, read_by: number){
-        if(read_by == parseInt(this.globals.userId)){
-            this.services.removePaper(id)
+    removePaper(idx: number, p: any){
+        let read_by = p["read_by"]
+        let id = p["id"]
+        if(!p["clicked_delete"] && read_by == parseInt(this.globals.userId)){
+            p["clicked_delete"] = true
+            this.services.removePaper(id).subscribe(
+                res => {
+                    if(!res["error"])
+                        this.papers.splice(idx, 1)
+                },
+                error => {
+                    p["clicked_delete"] = false
+                }
+            )
         }
     }
 
-    editPaper(p: any, read_by: string){
+    editPaper(idx: number, p: any, read_by: string){
         if(read_by == this.globals.userId){
         }
     }

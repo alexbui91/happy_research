@@ -70,7 +70,7 @@
     <div class="ui-block main-noti" *ngIf="!papers.length">
         <p>There are no contents or some errors may occur</p>
     </div>
-    <div class="ui-block" *ngFor="let p of papers">
+    <div class="ui-block" *ngFor="let p of papers; let i = index">
 
         <article class="hentry post">
             <div class='hentry-inner' [ngClass]="{'post-read-more': p.active}">
@@ -90,10 +90,10 @@
                         <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
                         <ul class="more-dropdown">
                             <li class='link-button'>
-                                <a (click)="editPaper(p.id, p.read_by)">Edit Post</a>
+                                <a (click)="editPaper(i, p)">Edit Post</a>
                             </li>
                             <li class='link-button'>
-                                <a (click)="removePaper(p.id, p.read_by)">Delete Post</a>
+                                <a (click)="removePaper(i, p)">Delete Post</a>
                             </li>
                         </ul>
                     </div>
