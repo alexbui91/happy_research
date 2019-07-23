@@ -157,4 +157,73 @@ export class NewFeeds{
         if(read_by == this.globals.userId){
         }
     }
+
+    viewMoreComments(p: any){
+        this.services.loadComments(p.id
+            ).subscribe(
+            res => {
+                if(res["comments"]){
+                    p.list_comments = res["comments"]
+                }
+            }
+        )
+    }
+    commentKeyDown(p: any, e: any){
+        if(!e.shiftKey && e.keyCode == 13){
+            e.preventDefault()
+            this.createComment(p)
+        }else if(e.shiftKey && e.keyCode == 13){
+            console.log("shift enter")
+        }
+    }
+    createComment(p: any){
+        if(p.newComment){
+            let d = new Date()
+            this.services.createComment(this.globals.userId, p.id, p.newComment).subscribe(
+                res => {
+                    if(res["id"]){
+                        let obj = {
+                            id: res["id"],
+                            comment: p.newComment,
+                            researcher_id: this.globals.userId,
+                            fullname: this.globals.fullname,
+                            paper_id: p.id
+                        }
+                        if(!p["list_comments"]){
+                            p["list_comments"] = [obj]
+                        }else{
+                            p["list_comments"].splice(0,0,obj)
+                        }
+                        p.newComment = ""
+                    }
+                }
+            )
+        }
+    }
+    editComment(c: any){
+        if(this.globals.userId == c.researcher_id){
+            c.is_edit = true
+        }
+    }
+    editCommentAction(e: any, c: any){
+        if(!e.shiftKey && e.keyCode == 13){
+            e.preventDefault()
+            this.services.updateComment(this.globals.userId, c.paper_id, c.id, c.comment).subscribe(
+                res => {
+                    if(res["id"])
+                        c.is_edit = false
+                }
+            )
+        }
+    }
+    removeComment(i: number, p: any, c: any){
+        if(this.globals.userId == c.researcher_id){
+            this.services.removeComment(this.globals.userId, c.paper_id, c.id).subscribe(
+                res => {
+                    if(res["num_row"] )
+                        p["list_comments"].splice(i, 1)
+                }
+            )
+        }
+    }
 }

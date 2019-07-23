@@ -1,5 +1,5 @@
 <div class="ui-block" *ngIf="globals.token">
-    
+
     <!-- News Feed Form  -->
     <div class="ui-block-title">
         <h6 class="title">Create new paper summary</h6>
@@ -10,21 +10,25 @@
                 <label class="control-label">Paper Title <sup><i class='fa fa-asterisk required'></i></sup></label>
                 <label class='has-error-line' *ngIf="paperNoti.title"> - {{ paperNoti.title }}</label>
                 <div class="form-group" [ngClass]="{'has-error': paperNoti.title}">
-                    <input class="form-control" type="text" placeholder="Ex. A Deep learning approach for ..." [(ngModel)]="paper.title" name="title">
+                    <input class="form-control" type="text" placeholder="Ex. A Deep learning approach for ..."
+                        [(ngModel)]="paper.title" name="title">
                 </div>
                 <div class='row'>
                     <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label class="control-label">Authors <sup><i class='fa fa-asterisk required'></i></sup></label>
                         <label class='has-error-line' *ngIf="paperNoti.authors"> - {{ paperNoti.authors }}</label>
                         <div class="form-group" [ngClass]="{'has-error': paperNoti.authors}">
-                            <input type="text" class="form-control" placeholder="Ex. Andrew Ng., Ian Goodfellow" [(ngModel)]="paper.authors" name="authors">
+                            <input type="text" class="form-control" placeholder="Ex. Andrew Ng., Ian Goodfellow"
+                                [(ngModel)]="paper.authors" name="authors">
                         </div>
                     </div>
                     <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <label class="control-label">Year of publication <sup><i class='fa fa-asterisk required'></i></sup></label>
+                        <label class="control-label">Year of publication <sup><i
+                                    class='fa fa-asterisk required'></i></sup></label>
                         <label class='has-error-line' *ngIf="paperNoti.year"> - {{ paperNoti.year }}</label>
                         <div class="form-group" [ngClass]="{'has-error': paperNoti.year}">
-                            <input type="text" class="form-control" placeholder="Ex. 2019" [(ngModel)]="paper.year" name="year">
+                            <input type="text" class="form-control" placeholder="Ex. 2019" [(ngModel)]="paper.year"
+                                name="year">
                         </div>
                     </div>
                 </div>
@@ -32,11 +36,14 @@
                     <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <label class="control-label">Keys</label>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys" name="keys">
+                            <input type="text" class="form-control"
+                                placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys"
+                                name="keys">
                         </div>
                     </div>
                     <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <label class="control-label">Project/Research</label> <button class='btn btn-purple btn-circle' (click)="openResearchModal()"><i class='fa fa-plus'></i></button>
+                        <label class="control-label">Project/Research</label> <button class='btn btn-purple btn-circle'
+                            (click)="openResearchModal()"><i class='fa fa-plus'></i></button>
                         <div class="form-group">
                             <select class="form-control">
                                 <option value="{{r.research_id}}" *ngFor="let r of researches">{{r.name}}</option>
@@ -45,29 +52,35 @@
                     </div>
                 </div>
 
-                <label class="control-label">Conference/Journal name <sup><i class='fa fa-asterisk required'></i></sup></label>
+                <label class="control-label">Conference/Journal name <sup><i
+                            class='fa fa-asterisk required'></i></sup></label>
                 <label class='has-error-line' *ngIf="paperNoti.conference"> - {{ paperNoti.conference }}</label>
                 <div class="form-group" [ngClass]="{'has-error': paperNoti.conference}">
-                    <input type="text" class="form-control" placeholder="Ex. ICDE or International Conference of Data Engineering" [(ngModel)]="paper.conference" name="conference">
+                    <input type="text" class="form-control"
+                        placeholder="Ex. ICDE or International Conference of Data Engineering"
+                        [(ngModel)]="paper.conference" name="conference">
                 </div>
 
                 <label class="control-label">Abstract <sup><i class='fa fa-asterisk required'></i></sup></label>
                 <label class='has-error-line' *ngIf="paperNoti.abstract"> - {{ paperNoti.abstract }}</label>
                 <div class="form-group" [ngClass]="{'has-error': paperNoti.abstract}">
-                    <textarea class="form-control" placeholder="Paste the abstract of the paper here" [(ngModel)]="paper.abstract" name="abstract"></textarea>
+                    <textarea class="form-control" placeholder="Paste the abstract of the paper here"
+                        [(ngModel)]="paper.abstract" name="abstract"></textarea>
                 </div>
 
                 <label class="control-label">Comments</label>
                 <div class="form-group">
-                    <textarea class="form-control" placeholder="You can tell your own ideas" [(ngModel)]="paper.comments" name="comments"></textarea>
+                    <textarea class="form-control" placeholder="You can tell your own ideas"
+                        [(ngModel)]="paper.comments" name="comments"></textarea>
                 </div>
-                <button (click)="savePaper()" class="btn btn-purple btn-lg full-width">Submit<div class="ripple-container"></div></button>
+                <button (click)="savePaper()" class="btn btn-purple btn-lg full-width">Submit<div
+                        class="ripple-container"></div></button>
             </div>
         </div>
     </div>
 </div>
-    
-    <!-- ... end News Feed Form  -->		
+
+<!-- ... end News Feed Form  -->
 <div id="newsfeed-items-grid">
     <div class="ui-block main-noti" *ngIf="!papers.length">
         <p>There are no contents or some errors may occur</p>
@@ -78,7 +91,7 @@
             <div class='hentry-inner' [ngClass]="{'post-read-more': p.active}">
                 <div class="post__author author vcard inline-items">
                     <img src="assets/img/author-page.jpg" alt="author">
-            
+
                     <div class="author-date">
                         <a class="h6 post__author-name fn" [routerLink]="['/profile', p.read_by]">{{p.fullname}}</a>
                         <div class="post__date">
@@ -87,9 +100,11 @@
                             </time>
                         </div>
                     </div>
-            
+
                     <div class="more" *ngIf="globals.userId == p.read_by">
-                        <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+                        <svg class="olymp-three-dots-icon">
+                            <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+                        </svg>
                         <ul class="more-dropdown">
                             <li class='link-button'>
                                 <a (click)="editPaper(i, p)">Edit Post</a>
@@ -99,14 +114,15 @@
                             </li>
                         </ul>
                     </div>
-            
+
                 </div>
-            
+
                 <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b> {{p.title}}</p>
                 <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{p.authors}}</p>
                 <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{p.year}}</p>
                 <p><i class="fa fa-file-alt"></i>&nbsp;<b>Abstract:</b> {{p.showing_abstract}}</p>
-                <p *ngIf="p.active && p.comments"><i class="fa fa-comments"></i> &nbsp;<b>Comments: </b>{{p.comments}}</p>
+                <p *ngIf="p.active && p.comments"><i class="fa fa-comments"></i> &nbsp;<b>Comments:&nbsp;</b><span [innerHTML]="p.comments"></span>
+                </p>
             </div>
             <div class="post-additional-info inline-items read-more-wrapper">
                 <div class="read-more" (click)="showMore(p)">
@@ -115,16 +131,70 @@
                 </div>
             </div>
         </article>
-        
+        <!-- Comment Form  -->
+
+        <form class="comment-form inline-items">
+            <div class="post__author author vcard inline-items">
+                <img src="assets/img/author-page.jpg" alt="author">
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="Enter your comment" (keydown)="commentKeyDown(p, $event)" name="newComment" [(ngModel)]="p.newComment"></textarea>
+                </div>
+            </div>
+        </form>
         <!-- Comments -->
-        
-        <!-- ... end Comment Form  -->
+        <ul class="comments-list" *ngIf="p.list_comments && p.list_comments.length">
+            <li class="comment-item" *ngFor="let c of p.list_comments; let i = index">
+                <div class="post__author author vcard inline-items">
+                    <img src="assets/img/author-page.jpg" alt="author">
+
+                    <div class="author-date">
+                        <!-- [routerLink]="[ '/profile', c.userId ]" -->
+                        <a class="h6 post__author-name fn">{{c.fullname}}</a>
+                        <div class="post__date">
+                            <time class="published" datetime="2004-07-24T18:18">
+                                
+                            </time>
+                        </div>
+                    </div>
+                    <div class="more" *ngIf="c.researcher_id == globals.userId">
+                        <svg class="olymp-three-dots-icon">
+                            <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+                        </svg>
+                        <ul class="more-dropdown">
+                            <li class='link-button'>
+                                <a (click)="editComment(c)">Edit Comment</a>
+                            </li>
+                            <li class='link-button'>
+                                <a (click)="removeComment(i, p, c)">Delete Comment</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <p class='comment-content' *ngIf="!c.is_edit">
+                    {{c.comment}}
+                    <!-- <span class="link-button" *ngIf="!c.active"><i class="fa fa-angle-down"></i> Show more</span>
+                    <span class="link-button" *ngIf="c.active"><i class="fa fa-angle-up"></i> Show less</span> -->
+                </p>
+                <div class="form-group" *ngIf="c.is_edit">
+                    <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea>
+                </div>
+            </li>
+        </ul>
+
+        <!-- ... end Comments -->
+
+        <a (click)="viewMoreComments(p)" class="link-button more-comments">View more comments <span>+</span></a>
+
     </div>
 
 </div>
 
 <button id="load-more-button" class="btn btn-control btn-more" (click)="loadMore()">
-    <svg class="olymp-three-dots-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+    <svg class="olymp-three-dots-icon">
+        <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+    </svg>
 </button>
 
 <!-- ... end Main Content -->

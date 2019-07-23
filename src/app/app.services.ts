@@ -17,7 +17,6 @@ export class Services{
         return this.http.post(this.url + "/paper/0", data)
     }
     removePaper(id: string, uid: string){
-        console.log(uid)
         let options = {body: {read_by: parseInt(uid)}, headers: httpOptions.headers}
         return this.http.delete(this.url + "/paper/" + id, options)
     }
@@ -52,5 +51,18 @@ export class Services{
     }
     getUserInfo(id: string){
         return this.http.get(this.url + "/researcher/" + id)
+    }
+    loadComments(id: string){
+        return this.http.get(this.url + "/comment/" + id)
+    }
+    createComment(user_id: string, paper_id: string, comment: string){
+        return this.http.post(this.url + "/comment/0", {paper_id: paper_id, user_id: user_id, comment: comment})
+    }
+    updateComment(user_id: string, paper_id: string, comment_id: string, comment: string){
+        return this.http.post(this.url + "/comment/0", {paper_id: paper_id, user_id: user_id, comment: comment, comment_id: comment_id})
+    }
+    removeComment(user_id: string, paper_id: string, comment_id: string){
+        let options = {body: {comment_id: comment_id, paper_id: paper_id, user_id: user_id}, headers: httpOptions.headers}
+        return this.http.delete(this.url + "/comment/0", options)
     }
 }

@@ -124,3 +124,16 @@ button.calendar, button.calendar:active {
 .link-button:hover{
     cursor: pointer;
 }
+a:hover{
+    cursor: pointer;
+}
+.ui-block-content, .comments-list .comment-item, .post, .ui-block-title, .notification-list .selectize-dropdown-content > *, .notification-list li, .more-comments, .comment-form {
+    padding: 12px;
+}
+.comment-content{
+    margin: 0 
+}
+.edit-comment-form{
+    background: #FFF;
+    min-height: 50px
+}
