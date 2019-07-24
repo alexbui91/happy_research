@@ -1,4 +1,5 @@
 export class Paper{
+    id: string = ""
     read_by: string = ""
     title: string = ""
     authors: string = ""

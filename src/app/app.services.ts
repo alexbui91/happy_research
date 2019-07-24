@@ -16,6 +16,9 @@ export class Services{
     submitPaper(data: object){
         return this.http.post(this.url + "/paper/0", data)
     }
+    updatePaper(data: object){
+        return this.http.post(this.url + "/paper/" + data["id"], data)
+    }
     removePaper(id: string, uid: string){
         let options = {body: {read_by: parseInt(uid)}, headers: httpOptions.headers}
         return this.http.delete(this.url + "/paper/" + id, options)

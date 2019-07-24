@@ -75,7 +75,7 @@
                 <div class="form-group" [ngClass]="{'has-error': paperNoti.abstract}">
                     <div class='comment-form'>
                         <div class='edit-comment-form' contenteditable="true"
-                            [ngClass]="{'has-error': paperNoti.abstract}" [textContent]="abstract_display"
+                            [ngClass]="{'has-error': paperNoti.abstract}" [innerHtml]="abstract_display"
                             (input)="paper.abstract=$event.target.innerHTML"></div>
                         <div class='placeholder' *ngIf="!paper.abstract">Paste the abstract of the paper here</div>
                     </div>
@@ -86,7 +86,7 @@
                 <label class="control-label">Comments</label>
                 <div class="form-group">
                     <div class='comment-form'>
-                        <div class='edit-comment-form' contenteditable="true" [textContent]="comment_display"
+                        <div class='edit-comment-form' contenteditable="true" [innerHtml]="comment_display"
                             (input)="paper.comments=$event.target.innerHTML"></div>
                         <div class='placeholder' *ngIf="!paper.comments">Enter your comments</div>
                     </div>
@@ -141,6 +141,7 @@
                 <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b> {{p.title}}</p>
                 <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{p.authors}}</p>
                 <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{p.year}}</p>
+                <p><i class="fa fa-book"></i>&nbsp;<b>Conference/Journal:</b> {{p.conference}}</p>
                 <p><i class="fa fa-file-alt"></i>&nbsp;
                     <b>Abstract:</b><br>
                     <span [innerHtml]="p.showing_abstract">
@@ -201,10 +202,10 @@
                 <p class='comment-content' *ngIf="!c.is_edit" [innerHtml]="c.comment">
                 </p>
                 <div class="form-group comment-form" *ngIf="c.is_edit">
-                    <div class='edit-comment-form reply-form' contenteditable="true" [textContent]="c.comment"
+                    <div class='edit-comment-form reply-form' contenteditable="true" [innerHtml]="c.comment"
                         (input)="c.edited_comment=$event.target.innerHTML"
                         (keydown)="editCommentAction(i, $event, c, p)"></div>
-                    <div class='placeholder' *ngIf="!c.comments">Enter your comments</div>
+                    <div class='placeholder' *ngIf="!c.comment">Enter your comments</div>
                     <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
                 </div>
             </li>
@@ -218,7 +219,7 @@
             <div class="post__author author vcard inline-items">
                 <img src="assets/img/author-page.jpg" alt="author">
                 <div class="form-group comment-form">
-                    <div contenteditable="true" class='edit-comment-form' [textContent]="p.comment"
+                    <div contenteditable="true" class='edit-comment-form' [innerHtml]="p.comment"
                         (input)="p.newComment=$event.target.innerHTML" (keydown)="commentKeyDown(p, $event)"></div>
                     <div class='placeholder' *ngIf="!p.newComment">Enter your comments</div>
                     <!-- <textarea class="form-control" placeholder="Enter your comment" (keydown)="commentKeyDown(p, $event)" name="newComment" [(ngModel)]="p.newComment"></textarea> -->

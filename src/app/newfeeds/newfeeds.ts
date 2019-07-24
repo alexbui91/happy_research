@@ -17,8 +17,8 @@ export class NewFeeds{
     paper: Paper = new Paper()
     papers: Array<any> = []
     researches: Array<any> = []
-    abstract_display: string = null
-    comment_display: string = null
+    abstract_display: String = new String("")
+    comment_display: String = new String("")
     conferences: Array<object> = []
     paperNoti: PaperNotification = new PaperNotification()
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
@@ -37,7 +37,6 @@ export class NewFeeds{
         this.services.autoCompleteConf(e.target.value).subscribe(
             res => {
                 this.conferences = res["confs"]
-                console.log(this.conferences)
             }
         )
     }
@@ -103,16 +102,30 @@ export class NewFeeds{
             this.paper.read_by = this.globals.userId
             let obj = JSON.parse(JSON.stringify(this.paper))
             this.paperNoti = new PaperNotification()
-            this.services.submitPaper(obj).subscribe(
-                res => {
-                    if(res["num_row"] == '1'){
-                        this.synchronizeLocalPaper(this.paper)
-                        this.paper = new Paper()
-                        this.abstract_display = null
-                        this.comment_display = null
+            if(obj.id){
+                this.services.updatePaper(obj).subscribe(
+                    res => {
+                        if(res["num_row"] == '1'){
+                            this.synchronizeLocalPaper(this.paper)
+                            this.paper = new Paper()
+                            this.abstract_display = new String("")
+                            this.comment_display = new String("")
+                        }
                     }
-                }
-            )
+                )
+            }else{
+                this.services.submitPaper(obj).subscribe(
+                    res => {
+                        if(res["num_row"] == '1'){
+                            this.synchronizeLocalPaper(this.paper)
+                            this.paper = new Paper()
+                            this.abstract_display = new String("")
+                            this.comment_display = new String("")
+                        }
+                    }
+                )
+            }
+            
         }
     }
 
@@ -165,8 +178,13 @@ export class NewFeeds{
         }
     }
 
-    editPaper(idx: number, p: any, read_by: string){
-        if(read_by == this.globals.userId){
+    editPaper(idx: number, p: any){
+        if(p.read_by == this.globals.userId){
+            for(let x in this.paper){
+                this.paper[x] = p[x]
+                this.abstract_display = p["abstract"]
+                this.comment_display = p["comments"]
+            }
         }
     }
 
@@ -244,7 +262,7 @@ export class NewFeeds{
                             p["list_comments"].splice(0,0,obj)
                         }
                         p.newComment = ""
-                        p.comment = ""
+                        p.comment = new String("")
                     }
                 }
             )
@@ -253,6 +271,7 @@ export class NewFeeds{
     editComment(c: any){
         if(this.globals.userId == c.researcher_id){
             c.is_edit = true
+            c.edited_comment = c.comment
         }
     }
     editCommentAction(i: number, e: any, c: any, p: any){
