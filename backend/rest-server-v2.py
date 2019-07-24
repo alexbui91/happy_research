@@ -57,28 +57,62 @@ class Database:
         return None
 
     def list_confs(self):
-        self.cur.execute("SELECT id, name, year, location, type, field, link, start_date, end_date, submit_date, notification_date FROM conference ORDER BY start_date ASC")
+        self.cur.execute("SELECT id, abbr, name, year, location, type, field, impact_factor, link, start_date, end_date, submit_date, notification_date FROM conference WHERE start_date IS NOT NULL ORDER BY start_date ASC")
+        results = self.cur.fetchall()
+        self.close()
+        return results
+
+    def search_confs(self, search_key):
+        search_key = search_key.lower()
+        self.cur.execute("SELECT id, abbr, name, year, location, type, field, impact_factor, link FROM conference WHERE lower(abbr) LIKE %s OR lower(name) LIKE %s ORDER BY abbr", (search_key, search_key))
         results = self.cur.fetchall()
         self.close()
         return results
 
     def list_papers(self):
-        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id ORDER BY research_id, read_by, read_date DESC")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id LEFT JOIN research c ON a.research_id = c.id ORDER BY read_date DESC")
         result = self.cur.fetchall()
         self.close()
         return result
 
     def list_papers_by_researcher(self, rid):
-        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE read_by='" + rid + "' ORDER BY read_date DESC")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE read_by='" + rid + "' ORDER BY read_date DESC")
         result = self.cur.fetchall()
         self.close()
         return result
 
     def get_paper(self, id):
-        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE a.id='" + id + "'")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE a.id='" + id + "'")
         result = self.cur.fetchall()
         self.close()
         return result
+
+    def get_comments(self, paper_id):
+        self.cur.execute("SELECT a.id, a.paper_id, a.researcher_id, a.comment, a.contribution_date, b.fullname FROM paper_contribution a JOIN researcher b ON a.researcher_id = b.id WHERE a.paper_id = %s ORDER BY a.contribution_date DESC", (paper_id))
+        result = self.cur.fetchall()
+        self.close()
+        return result
+
+    def insert_comment(self, paper_id, researcher_id, comment, contribution_date):
+        self.cur.execute("INSERT INTO paper_contribution(paper_id, researcher_id, comment, contribution_date) VALUES(%s, %s, %s, %s)", (paper_id, researcher_id, comment, contribution_date))
+        self.con.commit()
+        # get new created id
+        self.cur.execute("SELECT MAX(id) AS id FROM paper_contribution")
+        result = self.cur.fetchall()
+        self.close()
+        return result[0]['id']
+
+    def update_comment(self, comment_id, paper_id, researcher_id, comment, updated_date):
+        self.cur.execute("UPDATE paper_contribution SET comment = %s, updated_date = %s WHERE id = %s AND paper_id = %s AND researcher_id = %s", (comment, updated_date, comment_id, paper_id, researcher_id))
+        self.con.commit()
+        self.close()
+        return comment_id
+
+    def delete_comment(self, id,  paper_id, researcher_id):
+        num_row = self.cur.execute("DELETE FROM paper_contribution WHERE id = %s AND paper_id = %s AND researcher_id = %s", (id, paper_id, researcher_id))
+        self.con.commit()
+        self.close()
+        return num_row
 
     def check_login(self, username, password):
         print(username)
@@ -100,14 +134,19 @@ class Database:
             return results[0]
         return None
 
-    def insert_paper(self, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys):
-        num_row = self.cur.execute("INSERT INTO paper(title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, paper_keys) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys))
+    def insert_paper(self, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys, paper_link):
+        self.cur.execute("INSERT INTO paper(title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, paper_keys, paper_link) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys, paper_link))
         self.con.commit()
+        # get new id
+        self.cur.execute("SELECT MAX(id) AS id FROM paper")
+        result = self.cur.fetchall()
         self.close()
-        return num_row
+        if result and len(result) > 0:
+            return result[0]['id']
+        return 0
 
-    def update_paper(self, id, user_id, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys):
-        num_row = self.cur.execute("UPDATE paper SET title=%s, authors=%s, conference=%s, year=%s, affiliation=%s, abstract=%s, comments=%s, read_by=%s, read_date=%s, research_id=%s, paper_keys=%s WHERE id=%s AND read_by=%s", (title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys, id, user_id))
+    def update_paper(self, id, user_id, title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys, paper_link):
+        num_row = self.cur.execute("UPDATE paper SET title=%s, authors=%s, conference=%s, year=%s, affiliation=%s, abstract=%s, comments=%s, read_by=%s, read_date=%s, research_id=%s, paper_keys=%s, paper_link=%s WHERE id=%s AND read_by=%s", (title, authors, conference, year, affiliation, abstract, comments, read_by, read_date, research_id, keys, paper_link, id, user_id))
         self.con.commit()
         self.close()
         return num_row
@@ -119,7 +158,7 @@ class Database:
         return num_row
 
     def get_research(self, id):
-        self.cur.execute("SELECT name, goals, start_date, end_date_plan, end_date_actual, type FROM research WHERE id = %s", (id))
+        self.cur.execute("SELECT id, name, goals, start_date, end_date_plan, end_date_actual, type FROM research WHERE id = %s", (id))
         results = self.cur.fetchall()
         self.close()
         if (results and len(results) > 0):
@@ -127,7 +166,7 @@ class Database:
         return None
 
     def list_research(self):
-        self.cur.execute("SELECT name, goals, start_date, end_date_plan, end_date_actual, type FROM research ORDER BY type, start_date DESC")
+        self.cur.execute("SELECT id, name, goals, start_date, end_date_plan, end_date_actual, type FROM research ORDER BY type, start_date DESC")
         results = self.cur.fetchall()
         self.close()
         return results
@@ -240,6 +279,7 @@ class PaperAPI(Resource):
         self.reqparse.add_argument('read_date', type=str, location='json')
         self.reqparse.add_argument('research_id', type=int, location='json')
         self.reqparse.add_argument('keys', type=str, location='json')
+        self.reqparse.add_argument('paper_link', type=str, location='json')
         super(PaperAPI, self).__init__()
 
     def get(self, id):
@@ -262,10 +302,11 @@ class PaperAPI(Resource):
             inputs['read_date'] = now.strftime('%Y/%m/%d %H:%M:%S')
         db = Database()
         if id == 0:
-            num_row = db.insert_paper(inputs['title'], inputs['authors'], inputs['conference'], inputs['year'], inputs['affiliation'], inputs['abstract'], inputs['comments'], inputs['read_by'], inputs['read_date'], inputs['research_id'], inputs['keys'])
+            new_id = db.insert_paper(inputs['title'], inputs['authors'], inputs['conference'], inputs['year'], inputs['affiliation'], inputs['abstract'], inputs['comments'], inputs['read_by'], inputs['read_date'], inputs['research_id'], inputs['keys'], inputs['paper_link'])
         else:
-            num_row = db.update_paper(str(id), inputs['read_by'], inputs['title'], inputs['authors'], inputs['conference'], inputs['year'], inputs['affiliation'], inputs['abstract'], inputs['comments'], inputs['read_by'], inputs['read_date'], inputs['research_id'], inputs['keys'])
-        return {'num_row': num_row}
+            db.update_paper(str(id), inputs['read_by'], inputs['title'], inputs['authors'], inputs['conference'], inputs['year'], inputs['affiliation'], inputs['abstract'], inputs['comments'], inputs['read_by'], inputs['read_date'], inputs['research_id'], inputs['keys'], inputs['paper_link'])
+            new_id = id
+        return {'id': new_id}
       except Exception as e:
         return {'error': str(e)}
 
@@ -280,6 +321,56 @@ class PaperAPI(Resource):
         return {'num_row': num_row}
       except Exception as e:
         return {'error': str(e)}
+
+class PaperContributeAPI(Resource):
+    #decorators = [auth.login_required]
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('comment_id', type=int, location='json')
+        self.reqparse.add_argument('user_id', type=int, location='json')
+        self.reqparse.add_argument('paper_id', type=int, location='json')
+        self.reqparse.add_argument('comment', type=str, location='json')
+        super(PaperContributeAPI, self).__init__()
+
+    def get(self, paper_id):
+        db = Database()
+        comments = db.get_comments(str(paper_id))
+        for comment in comments:
+            comment_date = comment['contribution_date']
+            comment['contribution_date'] = comment_date.strftime('%Y/%m/%d %H:%M:%S')
+        return {'comments': comments}
+
+    def post(self, paper_id=0):
+      try:
+        args = self.reqparse.parse_args()
+        inputs = {}
+        for k, v in args.items():
+             inputs[k] = v
+        now = datetime.now()
+        inputs['contribution_date'] = now.strftime('%Y/%m/%d %H:%M:%S')
+        db = Database()
+        if not inputs['comment_id']:
+            new_id = db.insert_comment(inputs['paper_id'], inputs['user_id'], inputs['comment'], inputs['contribution_date'])
+        else:
+            new_id = db.update_comment(inputs['comment_id'], inputs['paper_id'], inputs['user_id'], inputs['comment'], inputs['contribution_date'])
+        return {'id': new_id}
+
+      except Exception as e:
+        return {'error': str(e)}
+
+    def delete(self, paper_id=0):
+      try:
+        args = self.reqparse.parse_args()
+        inputs = {}
+        for k, v in args.items():
+             inputs[k] = v
+        db = Database()
+        num_row = db.delete_comment(str(inputs['comment_id']), str(inputs['paper_id']), str(inputs['user_id']))
+        return {'num_row': num_row}
+      except Exception as e:
+        return {'error': str(e)}
+
 
 class ResearcherListAPI(Resource):
      #decorators = [auth.login_required]
@@ -359,10 +450,30 @@ class ConferenceAPI(Resource):
         db = Database()
         confs = db.list_confs()
         for conf in confs:
-            conf['start_date'] = conf['start_date'].strftime('%Y/%m/%d %H:%M:%S')
-            conf['end_date'] = conf['end_date'].strftime('%Y/%m/%d %H:%M:%S')
-            conf['submit_date'] = conf['submit_date'].strftime('%Y/%m/%d %H:%M:%S')
-            conf['notification_date'] = conf['notification_date'].strftime('%Y/%m/%d %H:%M:%S')
+            if conf['start_date']:
+                conf['start_date'] = conf['start_date'].strftime('%Y/%m/%d %H:%M:%S')
+            if conf['end_date']:
+                conf['end_date'] = conf['end_date'].strftime('%Y/%m/%d %H:%M:%S')
+            if conf['submit_date']:
+                conf['submit_date'] = conf['submit_date'].strftime('%Y/%m/%d %H:%M:%S')
+            if conf['notification_date']:
+                conf['notification_date'] = conf['notification_date'].strftime('%Y/%m/%d %H:%M:%S')
+            if conf['type'] == 1:
+                conf['type'] = 'conference'
+            else:
+                conf['type'] = 'journal'
+        return {'confs': confs}
+
+class ConferenceSearchAPI(Resource):
+    #decorators = [auth.login_required]
+
+    def __init__(self):
+        super(ConferenceSearchAPI, self).__init__()
+
+    def get(self, search_key):
+        db = Database()
+        confs = db.search_confs(search_key + "%")
+        for conf in confs:
             if conf['type'] == 1:
                 conf['type'] = 'conference'
             else:
@@ -374,8 +485,10 @@ api.add_resource(ResearcherListAPI, '/api/v1/researchers', endpoint='researchers
 api.add_resource(PaperListAPI, '/api/v1/papers')
 api.add_resource(PaperListAPI, '/api/v1/papers/<int:rid>', endpoint='papers')
 api.add_resource(PaperAPI, '/api/v1/paper/<int:id>', endpoint='paper')
+api.add_resource(PaperContributeAPI, '/api/v1/comment/<int:paper_id>', endpoint='comment')
 api.add_resource(ResearchAPI, '/api/v1/research/<int:id>', endpoint='research')
 api.add_resource(ConferenceAPI, '/api/v1/conf', endpoint='conf')
+api.add_resource(ConferenceSearchAPI, '/api/v1/conf/search/<string:search_key>')
 
 
 if __name__ == '__main__':
