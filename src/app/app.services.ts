@@ -65,4 +65,7 @@ export class Services{
         let options = {body: {comment_id: comment_id, paper_id: paper_id, user_id: user_id}, headers: httpOptions.headers}
         return this.http.delete(this.url + "/comment/0", options)
     }
+    autoCompleteConf(key: string){
+        return this.http.get(this.url + "/conf/search/"+encodeURI(key))
+    }
 }

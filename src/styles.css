@@ -30,15 +30,23 @@ button.calendar, button.calendar:active {
     margin-left: 5px
 }
 .read-more{
-    width: 100%;
+    position: absolute;
+    bottom: 2px;
+    right: 12px;
+    width: 91px;
     text-align: center;
     user-select: none;
+    background: #FFF;
 }
 .read-more:hover{
     cursor: pointer;
+    text-decoration: underline
+}
+.read-more.show-less{
+
 }
 .hentry-inner{
-    height: 183px;
+    height: 175px;
     overflow: hidden;
 }
 .hentry-inner.post-read-more{
@@ -123,6 +131,7 @@ button.calendar, button.calendar:active {
 }
 .link-button:hover{
     cursor: pointer;
+    text-decoration: underline
 }
 a:hover{
     cursor: pointer;
@@ -133,7 +142,70 @@ a:hover{
 .comment-content{
     margin: 0 
 }
-.edit-comment-form{
+.comment-form{
+    position: relative;
+    margin-bottom: 0;
+}
+.comment-form .placeholder{
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    color: #ccc;
+    z-index: 1;
+}
+.comment-form .form-control{
+    border: none
+}
+.comment-form .edit-comment-form{
+    position: relative;
+    z-index: 2;
+    min-height: 50px;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    border: 1px solid #ced4da;
+    background: none
+}
+.paper-form-wrapper .comment-form{
+    padding: 0;
+    border: none;
+    height: 100px;
+}
+.comment-form .edit-comment-form{
+    height: 100%;
+}
+
+.comments-list .comment-item {
     background: #FFF;
-    min-height: 50px
+    border-bottom: 1px solid #e6ecf5;
+    border-top: 1px solid #e6ecf5;
+}
+.reply-form{
+    background: #FFF
+}
+.more-comments{
+    text-align: left
+}
+.post__date{
+    font-size: 12px;
+}
+.autocomplete-form{
+    position: relative;
+    overflow: visible;
+}
+.autocomplete{
+    height: 0px;
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    width: 100%
+}
+.autocomplete .dropdown-menu{
+    display: block;
+    width: 100%;
+    overflow-x: hidden;
+}
+.autocomplete .dropdown-item{
+    padding-left: 10px;
+    font-size: 13px;
 }

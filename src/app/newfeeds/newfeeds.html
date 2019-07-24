@@ -55,23 +55,44 @@
                 <label class="control-label">Conference/Journal name <sup><i
                             class='fa fa-asterisk required'></i></sup></label>
                 <label class='has-error-line' *ngIf="paperNoti.conference"> - {{ paperNoti.conference }}</label>
-                <div class="form-group" [ngClass]="{'has-error': paperNoti.conference}">
+                <div class="form-group autocomplete-form" [ngClass]="{'has-error': paperNoti.conference}">
                     <input type="text" class="form-control"
                         placeholder="Ex. ICDE or International Conference of Data Engineering"
-                        [(ngModel)]="paper.conference" name="conference">
+                        [(ngModel)]="paper.conference" name="conference" (keyup)="autoCompleteConf($event)">
+                    <div class="autocomplete" [ngClass]="{'visible': conferences.length, 'invisible': !conferences.length}">
+                        <ul class="dropdown-menu">
+                            <li class="" *ngFor="let conf of conferences">
+                                <a class="link-button dropdown-item" (click)="paper.conference = conf.name; conferences=[]">
+                                    [{{conf.abbr}}] {{conf.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <label class="control-label">Abstract <sup><i class='fa fa-asterisk required'></i></sup></label>
                 <label class='has-error-line' *ngIf="paperNoti.abstract"> - {{ paperNoti.abstract }}</label>
                 <div class="form-group" [ngClass]="{'has-error': paperNoti.abstract}">
-                    <textarea class="form-control" placeholder="Paste the abstract of the paper here"
-                        [(ngModel)]="paper.abstract" name="abstract"></textarea>
+                    <div class='comment-form'>
+                        <div class='edit-comment-form' contenteditable="true"
+                            [ngClass]="{'has-error': paperNoti.abstract}" [textContent]="abstract_display"
+                            (input)="paper.abstract=$event.target.innerHTML"></div>
+                        <div class='placeholder' *ngIf="!paper.abstract">Paste the abstract of the paper here</div>
+                    </div>
+                    <!-- <textarea class="form-control" placeholder="Paste the abstract of the paper here"
+                        [(ngModel)]="paper.abstract" name="abstract"></textarea> -->
                 </div>
 
                 <label class="control-label">Comments</label>
                 <div class="form-group">
+                    <div class='comment-form'>
+                        <div class='edit-comment-form' contenteditable="true" [textContent]="comment_display"
+                            (input)="paper.comments=$event.target.innerHTML"></div>
+                        <div class='placeholder' *ngIf="!paper.comments">Enter your comments</div>
+                    </div>
+                    <!--                    
                     <textarea class="form-control" placeholder="You can tell your own ideas"
-                        [(ngModel)]="paper.comments" name="comments"></textarea>
+                        [(ngModel)]="paper.comments" name="comments"></textarea> -->
                 </div>
                 <button (click)="savePaper()" class="btn btn-purple btn-lg full-width">Submit<div
                         class="ripple-container"></div></button>
@@ -120,27 +141,32 @@
                 <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b> {{p.title}}</p>
                 <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{p.authors}}</p>
                 <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{p.year}}</p>
-                <p><i class="fa fa-file-alt"></i>&nbsp;<b>Abstract:</b> {{p.showing_abstract}}</p>
-                <p *ngIf="p.active && p.comments"><i class="fa fa-comments"></i> &nbsp;<b>Comments:&nbsp;</b><span [innerHTML]="p.comments"></span>
+                <p><i class="fa fa-file-alt"></i>&nbsp;
+                    <b>Abstract:</b><br>
+                    <span [innerHtml]="p.showing_abstract">
+                    </span>
+                    &nbsp;<span *ngIf="p.active && !p.comments" (click)="showMore(p)" class='link-button'><i
+                            class="fa fa-angle-up"></i> Show less</span>
+                </p>
+                <p *ngIf="p.active && p.comments">
+                    <i class="fa fa-comments"></i> &nbsp;<b>Comments:&nbsp;</b><br>
+                    <span [innerHTML]="p.comments"></span>
+                    &nbsp;<span *ngIf="p.active && p.comments" (click)="showMore(p)" class='link-button'><i
+                            class="fa fa-angle-up"></i> Show less</span>
+                </p>
+                <p class="read-more" (click)="showMore(p)">
+                    <span *ngIf="!p.active"><i class="fa fa-angle-down"></i> Show more</span>
+                    <!-- <span *ngIf="p.active"><i class="fa fa-angle-up"></i> Show less</span> -->
                 </p>
             </div>
-            <div class="post-additional-info inline-items read-more-wrapper">
+            <!-- <div class="post-additional-info inline-items read-more-wrapper">
                 <div class="read-more" (click)="showMore(p)">
                     <span *ngIf="!p.active"><i class="fa fa-angle-down"></i> Show more</span>
                     <span *ngIf="p.active"><i class="fa fa-angle-up"></i> Show less</span>
                 </div>
-            </div>
+            </div> -->
         </article>
-        <!-- Comment Form  -->
-
-        <form class="comment-form inline-items">
-            <div class="post__author author vcard inline-items">
-                <img src="assets/img/author-page.jpg" alt="author">
-                <div class="form-group">
-                    <textarea class="form-control" placeholder="Enter your comment" (keydown)="commentKeyDown(p, $event)" name="newComment" [(ngModel)]="p.newComment"></textarea>
-                </div>
-            </div>
-        </form>
+        <a (click)="viewMoreComments(p)" class="link-button more-comments">View comments <span>+</span></a>
         <!-- Comments -->
         <ul class="comments-list" *ngIf="p.list_comments && p.list_comments.length">
             <li class="comment-item" *ngFor="let c of p.list_comments; let i = index">
@@ -152,7 +178,7 @@
                         <a class="h6 post__author-name fn">{{c.fullname}}</a>
                         <div class="post__date">
                             <time class="published" datetime="2004-07-24T18:18">
-                                
+                                {{c.calculated_time}}
                             </time>
                         </div>
                     </div>
@@ -172,21 +198,33 @@
 
                 </div>
 
-                <p class='comment-content' *ngIf="!c.is_edit">
-                    {{c.comment}}
-                    <!-- <span class="link-button" *ngIf="!c.active"><i class="fa fa-angle-down"></i> Show more</span>
-                    <span class="link-button" *ngIf="c.active"><i class="fa fa-angle-up"></i> Show less</span> -->
+                <p class='comment-content' *ngIf="!c.is_edit" [innerHtml]="c.comment">
                 </p>
-                <div class="form-group" *ngIf="c.is_edit">
-                    <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea>
+                <div class="form-group comment-form" *ngIf="c.is_edit">
+                    <div class='edit-comment-form reply-form' contenteditable="true" [textContent]="c.comment"
+                        (input)="c.edited_comment=$event.target.innerHTML"
+                        (keydown)="editCommentAction(i, $event, c, p)"></div>
+                    <div class='placeholder' *ngIf="!c.comments">Enter your comments</div>
+                    <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
                 </div>
             </li>
         </ul>
 
         <!-- ... end Comments -->
 
-        <a (click)="viewMoreComments(p)" class="link-button more-comments">View more comments <span>+</span></a>
+        <!-- Comment Form  -->
 
+        <form class="comment-form inline-items">
+            <div class="post__author author vcard inline-items">
+                <img src="assets/img/author-page.jpg" alt="author">
+                <div class="form-group comment-form">
+                    <div contenteditable="true" class='edit-comment-form' [textContent]="p.comment"
+                        (input)="p.newComment=$event.target.innerHTML" (keydown)="commentKeyDown(p, $event)"></div>
+                    <div class='placeholder' *ngIf="!p.newComment">Enter your comments</div>
+                    <!-- <textarea class="form-control" placeholder="Enter your comment" (keydown)="commentKeyDown(p, $event)" name="newComment" [(ngModel)]="p.newComment"></textarea> -->
+                </div>
+            </div>
+        </form>
     </div>
 
 </div>

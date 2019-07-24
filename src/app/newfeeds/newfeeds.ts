@@ -17,6 +17,9 @@ export class NewFeeds{
     paper: Paper = new Paper()
     papers: Array<any> = []
     researches: Array<any> = []
+    abstract_display: string = null
+    comment_display: string = null
+    conferences: Array<object> = []
     paperNoti: PaperNotification = new PaperNotification()
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
         if(this.auto){
@@ -30,7 +33,14 @@ export class NewFeeds{
             }
         )
     }
-
+    autoCompleteConf(e: any){
+        this.services.autoCompleteConf(e.target.value).subscribe(
+            res => {
+                this.conferences = res["confs"]
+                console.log(this.conferences)
+            }
+        )
+    }
     getPapers(){
         this.services.getNewFeeds(this.viewId).subscribe(
             res => {
@@ -98,6 +108,8 @@ export class NewFeeds{
                     if(res["num_row"] == '1'){
                         this.synchronizeLocalPaper(this.paper)
                         this.paper = new Paper()
+                        this.abstract_display = null
+                        this.comment_display = null
                     }
                 }
             )
@@ -163,11 +175,48 @@ export class NewFeeds{
             ).subscribe(
             res => {
                 if(res["comments"]){
-                    p.list_comments = res["comments"]
+                    let obj = res["comments"]
+                    for(let x in obj){
+                        obj[x]["calculated_time"] = this.calculate_time(obj[x]["contribution_date"])
+                    }
+                    p.list_comments = obj
                 }
             }
         )
     }
+
+    calculate_time(time: string){
+        let now = new Date()
+        let d = new Date(time)
+        // get seconds offset
+        let off = (now.getTime() - d.getTime()) / 1000
+        let tmp = Math.floor(off / 60)
+        let res = ""
+        if(tmp < 60)
+            res = "min"
+        else{
+            tmp = Math.floor(off / 3600)
+            if(tmp < 24)
+                res = "hour"
+            else{
+                res = ""
+            }
+        }
+        if(!res){
+            // larger than 24h
+            res = time
+        }else{
+            res = tmp + " " + res
+            if(tmp > 1)
+                res += "s"
+        }
+        return res
+    }
+
+    calculate_datetime(time: Date){
+
+    }
+
     commentKeyDown(p: any, e: any){
         if(!e.shiftKey && e.keyCode == 13){
             e.preventDefault()
@@ -195,6 +244,7 @@ export class NewFeeds{
                             p["list_comments"].splice(0,0,obj)
                         }
                         p.newComment = ""
+                        p.comment = ""
                     }
                 }
             )
@@ -205,15 +255,22 @@ export class NewFeeds{
             c.is_edit = true
         }
     }
-    editCommentAction(e: any, c: any){
+    editCommentAction(i: number, e: any, c: any, p: any){
         if(!e.shiftKey && e.keyCode == 13){
             e.preventDefault()
-            this.services.updateComment(this.globals.userId, c.paper_id, c.id, c.comment).subscribe(
-                res => {
-                    if(res["id"])
-                        c.is_edit = false
-                }
-            )
+            if(!c.edited_comment){
+                this.removeComment(i, p, c)
+            }else{
+                console.log(c.edited_comment)
+                c.comment = c.edited_comment
+                c.edited_comment = ""
+                this.services.updateComment(this.globals.userId, c.paper_id, c.id, c.comment).subscribe(
+                    res => {
+                        if(res["id"])
+                            c.is_edit = false
+                    }
+                )
+            }
         }
     }
     removeComment(i: number, p: any, c: any){
