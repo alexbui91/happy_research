@@ -1,0 +1,39 @@
+<div class="ui-block">
+    <div class="ui-block-title">
+        <h6 class="title">{{research.name}}'s information</h6>
+    </div>
+    <div class="ui-block-content">
+        <div class="row">
+            <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                <!-- W-Personal-Info -->
+                <ul class="widget w-personal-info item-block">
+                    <li>
+                        <span class="title">Start Date:</span>
+                        <span class="text">{{research.start_date}}</span>
+                    </li>
+                    <li>
+                        <span class="title">Goals:</span>
+                        <span class="text">{{research.goals}} </span>
+                    </li>
+                </ul>
+                <!-- ... end W-Personal-Info -->
+            </div>
+            <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                <!-- W-Personal-Info -->
+                <ul class="widget w-personal-info item-block">
+                    <li>
+                        <span class="title">End Date Plan:</span>
+                        <span class="text">{{research.end_date_plan}}</span>
+                    </li>
+                    <li>
+                        <span class="title">Type:</span>
+                        <span class="text" *ngIf="research.type == 1">Project</span>
+                        <span class="text" *ngIf="research.type == 2">Research</span>
+                    </li>
+                </ul>
+                <!-- ... end W-Personal-Info -->
+            </div>
+        </div>
+    </div>
+</div>
+<newfeeds></newfeeds>
