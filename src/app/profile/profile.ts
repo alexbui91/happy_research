@@ -22,6 +22,7 @@ export class Profile implements AfterViewInit{
                 res => {
                     this.user["id"] = res["researcher"]["id"]
                     this.user["fullname"] = res["researcher"]["fullname"]
+                    this.globals.key_search_display = new String(this.user["fullname"])
                 }
             )
         })

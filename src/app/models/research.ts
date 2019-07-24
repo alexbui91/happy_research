@@ -1,4 +1,5 @@
 export class Research{
+    id: string = ""
     name: string = ""
     goals: string = ""
     start_date: string = ""

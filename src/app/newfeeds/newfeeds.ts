@@ -22,13 +22,14 @@ export class NewFeeds{
     conferences: Array<object> = []
     paperNoti: PaperNotification = new PaperNotification()
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
+        this.globals.key_search_display = new String("")
         if(this.auto){
             this.getPapers()
         }
         this.services.getResearches().subscribe(
             res => {
-                if(res["researches"]){
-                    this.researches = res["researches"]
+                if(res[0]["researches"]){
+                    this.researches = res[0]["researches"]
                 }
             }
         )
@@ -40,6 +41,7 @@ export class NewFeeds{
             }
         )
     }
+    // get papers with user id or get all papers
     getPapers(){
         this.services.getNewFeeds(this.viewId).subscribe(
             res => {
@@ -52,6 +54,9 @@ export class NewFeeds{
                 }
             }
         )
+    }
+    setPapers(papers: Array<any>){
+        this.papers = papers
     }
     // validate paper submission form
     validatePaper() {
@@ -105,7 +110,7 @@ export class NewFeeds{
             if(obj.id){
                 this.services.updatePaper(obj).subscribe(
                     res => {
-                        if(res["num_row"] == '1'){
+                        if(res["id"]){
                             this.synchronizeLocalPaper(this.paper)
                             this.paper = new Paper()
                             this.abstract_display = new String("")
@@ -116,7 +121,7 @@ export class NewFeeds{
             }else{
                 this.services.submitPaper(obj).subscribe(
                     res => {
-                        if(res["num_row"] == '1'){
+                        if(res["id"]){
                             this.synchronizeLocalPaper(this.paper)
                             this.paper = new Paper()
                             this.abstract_display = new String("")

@@ -8,7 +8,7 @@ export class Globals{
     token: string = ''
     fullname: string = ""
     duration: number = 600
-
+    key_search_display: String = new String("")
     saveToken(){
         localStorage.setItem("token", this.token)
         localStorage.setItem("userId", this.userId)

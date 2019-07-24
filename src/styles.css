@@ -10,6 +10,9 @@
     padding-top: 15px;
     font-weight: bold;
 }
+.main-noti p{
+    font-size: 16px;
+}
 button.calendar, button.calendar:active {
     width: 2.75rem;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;
@@ -174,7 +177,24 @@ a:hover{
 .comment-form .edit-comment-form{
     height: 100%;
 }
-
+.search-input{
+    border: none
+}
+.search-input  button{
+    margin: 0
+}
+.search-input .edit-comment-form{
+    min-height: 0;
+    width: 90%;
+    float: left;
+    border: none;
+    color: #FFF;
+    padding: 0;
+    font-size: 16px;
+}
+.search-input .edit-comment-form{
+    text-transform: capitalize
+}
 .comments-list .comment-item {
     background: #FFF;
     border-bottom: 1px solid #e6ecf5;
@@ -208,4 +228,14 @@ a:hover{
 .autocomplete .dropdown-item{
     padding-left: 10px;
     font-size: 13px;
+}
+
+.post__author-name{
+    text-transform: uppercase
+}
+.project-title{
+    position: absolute;
+    font-size: 14px;
+    display: inline;
+    top: 12px;
 }

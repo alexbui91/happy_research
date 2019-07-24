@@ -45,8 +45,8 @@
                         <label class="control-label">Project/Research</label> <button class='btn btn-purple btn-circle'
                             (click)="openResearchModal()"><i class='fa fa-plus'></i></button>
                         <div class="form-group">
-                            <select class="form-control">
-                                <option value="{{r.research_id}}" *ngFor="let r of researches">{{r.name}}</option>
+                            <select class="form-control" [(ngModel)]="paper.research_id" name="research_id">
+                                <option value="{{r.id}}" *ngFor="let r of researches">{{r.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -114,7 +114,12 @@
                     <img src="assets/img/author-page.jpg" alt="author">
 
                     <div class="author-date">
-                        <a class="h6 post__author-name fn" [routerLink]="['/profile', p.read_by]">{{p.fullname}}</a>
+                        <div>
+                            <a class="h6 post__author-name fn" [routerLink]="['/profile', p.read_by]">
+                                {{p.fullname}}&nbsp;
+                            </a>
+                            <div *ngIf="p.research_name" class='project-title'>posted a paper in <a [routerLink]="['/research-papers', p.research_id]" class='link-button'>{{p.research_name}}</a></div>
+                        </div>
                         <div class="post__date">
                             <time class="published">
                                 {{p.read_date}}

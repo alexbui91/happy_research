@@ -14,6 +14,7 @@ import { Globals } from './globals';
 import {ResearchModal} from './components/research'
 import {LoginModal} from './components/login_modal'
 import { Profile } from './profile';
+import { ResearchPapers } from './research-papers';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { Profile } from './profile';
     Home,
     NewFeeds,
     Profile,
+    ResearchPapers,
     ResearchModal,
     LoginModal
   ],

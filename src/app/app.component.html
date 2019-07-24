@@ -24,9 +24,9 @@
                         <img alt="author" src="assets/img/author-page.jpg" class="avatar">
                         <span class="icon-status online"></span>
                     </div>
-                    <a href="02-ProfilePage.html" class="author-name fn">
+                    <a [routerLink]="['/profile', globals.userId]" class="author-name fn">
                         <div class="author-title">
-                            Alex Bui <svg class="olymp-dropdown-arrow-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
+                            {{ globals.fullname }} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
                         </div>
                         <span class="author-subtitle">PhD Student</span>
                     </a>
@@ -69,8 +69,13 @@
 
 	<div class="header-content-wrapper">
 		<form class="search-bar w-search notification-list friend-requests">
-			<div class="form-group with-button">
-				<input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text">
+			<div class="form-group with-button comment-form search-input">
+                <div class='form-control js-user-search edit-comment-form reply-form' contenteditable="true" [textContent]="globals.key_search_display"
+                    (input)="search_content=$event.target.textContent"
+                    (keydown)="search($event)" data-gramm_editor="false"></div>
+                <div class='placeholder' *ngIf="!globals.key_search_display">Search...</div>
+                    <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
+				<!-- <input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text" name="search" [(ngModel)]="search_content" [value]="globals.fullname"> -->
 				<button>
 					<svg class="olymp-magnifying-glass-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use></svg>
 				</button>
@@ -136,7 +141,7 @@
 						</div>
 					</div>
 				</div>
-				<a href="#" class="author-name fn">
+				<a [routerLink]="['/profile', globals.userId]" class="author-name fn">
 					<div class="author-title">
 						{{globals.fullname}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
 					</div>

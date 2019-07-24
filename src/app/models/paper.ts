@@ -8,4 +8,5 @@ export class Paper{
     year: number = 2019
     abstract: string = ""
     comments: string = ""
+    research_id: number = 0
 }

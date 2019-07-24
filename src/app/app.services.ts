@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core'
 import  {HttpClient, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http'
+import { encode } from 'punycode';
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -68,7 +69,16 @@ export class Services{
         let options = {body: {comment_id: comment_id, paper_id: paper_id, user_id: user_id}, headers: httpOptions.headers}
         return this.http.delete(this.url + "/comment/0", options)
     }
+    // autocomplete conference name by key words
     autoCompleteConf(key: string){
         return this.http.get(this.url + "/conf/search/"+encodeURI(key))
+    }
+    // overall search by key words
+    search(key: string){
+        return this.http.get(this.url + "/search/" + encodeURI(key))
+    }
+    // get all papers by research
+    getResearchPapers(id: string){
+        return this.http.get(this.url + "/research/" + id)
     }
 }
