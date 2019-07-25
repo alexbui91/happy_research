@@ -81,7 +81,9 @@
             <div class="form-group with-button comment-form search-input autocomplete-form">
                 <div class='form-control js-user-search edit-comment-form reply-form' contenteditable="true"
                     [textContent]="" (input)="search_content=$event.target.textContent" (keyup)="search($event)"
-                    data-gramm_editor="false" (focusout)="searchOut()" (focus)="searchIn()"></div>
+                    data-gramm_editor="false" (focusout)="searchOut()" (focus)="searchIn()"
+                    (paste)="globals.getPasteText($event);"
+                ></div>
                 <div class='placeholder' *ngIf="!search_content">Search...</div>
                 <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
                 <!-- <input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text" name="search" [(ngModel)]="search_content" [value]="globals.fullname"> -->

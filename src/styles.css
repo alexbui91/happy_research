@@ -271,10 +271,13 @@ a:hover{
     text-transform: uppercase
 }
 .project-title{
-    position: absolute;
+    /* position: absolute; */
     font-size: 14px;
-    display: inline;
-    top: 12px;
+    /* display: inline;
+    top: 12px; */
+}
+.author-date{
+    width: calc(100% - 60px)
 }
 .user-info .btn.calendar{
     margin: 0;

@@ -8,7 +8,7 @@
                     <a class="h6 post__author-name fn" [routerLink]="['/profile', info.read_by]">
                         {{info.fullname}}&nbsp;
                     </a>
-                    <div *ngIf="info.research_name" class='project-title'>posted a paper in <a [routerLink]="['/research-papers', info.research_id]" class='link-button'>{{info.research_name}}</a></div>
+                    <span *ngIf="info.research_name" class='project-title'>posted a paper in <a [routerLink]="['/research-papers', info.research_id]" class='link-button'>{{info.research_name}}</a></span>
                 </div>
                 <div class="post__date">
                     <time class="published">
@@ -99,7 +99,8 @@
         <div class="form-group comment-form" *ngIf="c.is_edit">
             <div class='edit-comment-form reply-form' contenteditable="true" [innerHtml]="c.comment"
                 (input)="c.edited_comment=$event.target.innerHTML"
-                (keydown)="editCommentAction(i, $event, c, info)" id="comment_{{info.id}}_{{c.id}}"></div>
+                (keydown)="editCommentAction(i, $event, c, info)" id="comment_{{info.id}}_{{c.id}}"
+                (paste)="globals.getPasteText($event);"></div>
             <div class='placeholder' *ngIf="!c.comment">Enter your comments</div>
             <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
         </div>

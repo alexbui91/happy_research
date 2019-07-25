@@ -85,7 +85,9 @@
                         <div class='comment-form'>
                             <div class='edit-comment-form' contenteditable="true"
                                 [ngClass]="{'has-error': paperNoti.abstract}" [innerHtml]="abstract_display"
-                                (input)="paper.abstract=$event.target.innerHTML"></div>
+                                (input)="paper.abstract=$event.target.innerHTML" 
+                                (paste)="globals.getPasteText($event);"
+                            ></div>
                             <div class='placeholder' *ngIf="!paper.abstract">Paste the abstract of the paper here</div>
                         </div>
                         <!-- <textarea class="form-control" placeholder="Paste the abstract of the paper here"
@@ -96,7 +98,9 @@
                     <div class="form-group">
                         <div class='comment-form'>
                             <div class='edit-comment-form' contenteditable="true" [innerHtml]="comment_display"
-                                (input)="paper.comments=$event.target.innerHTML"></div>
+                                (input)="paper.comments=$event.target.innerHTML" 
+                                (paste)="globals.getPasteText($event)"
+                            ></div>
                             <div class='placeholder' *ngIf="!paper.comments">Enter your comments</div>
                         </div>
                         <!--                    
@@ -121,10 +125,10 @@
 
     </div>
 
-    <button id="load-more-button" class="btn btn-control btn-more" (click)="loadMore()">
+    <!-- <button id="load-more-button" class="btn btn-control btn-more" (click)="loadMore()">
         <svg class="olymp-three-dots-icon">
             <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
         </svg>
-    </button>
+    </button> -->
 
     <!-- ... end Main Content -->

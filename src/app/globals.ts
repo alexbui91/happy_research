@@ -28,4 +28,9 @@ export class Globals{
         a = a.slice(0, l)
         return a.join(" ")
     }
+    getPasteText(e: any){
+        e.preventDefault()
+        let text = e.clipboardData.getData('text/plain')
+        document.execCommand("insertHTML", false, text);
+    }
 }

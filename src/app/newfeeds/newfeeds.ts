@@ -177,6 +177,7 @@ export class NewFeeds{
         this.abstract_display = new String("")
         this.comment_display = new String("")
     }
+
     // strim shorter paragraph to display
     // showMore(p: any){
     //     p["showing_abstract"] = this.strimParagraph(p)
