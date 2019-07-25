@@ -16,6 +16,7 @@ export class AppComponent {
     conferences: Array<object> = []
     search_content: string = ""
     searchResults: Array<object> = []
+    isShowSearchBox: boolean = false
     constructor(private globals: Globals, private rmodal: NgbModal, private services: Services) {
         this.globals.loadToken()
         this.services.getConferences().subscribe(
@@ -96,6 +97,7 @@ export class AppComponent {
         // if (e.keyCode == 13) {
             // e.preventDefault()
             // let s = e.target.textContent.toLowerCase()
+        this.isShowSearchBox = true
         this.searchAction()   
         // }
     }
@@ -109,7 +111,8 @@ export class AppComponent {
                         let obj = res["papers"]
                         obj = obj as any[]
                         if(obj.length > 10){
-                            this.searchResults = obj.splice(10, obj.length - 10)
+                            obj.splice(10, obj.length - 10)
+                            this.searchResults = obj
                         }else{
                             this.searchResults = obj
                         }
@@ -122,5 +125,11 @@ export class AppComponent {
             )
         }else
             this.searchResults = []
+    }
+    searchOut(){
+        this.isShowSearchBox = false
+    }
+    searchIn(){
+        this.isShowSearchBox = true
     }
 }

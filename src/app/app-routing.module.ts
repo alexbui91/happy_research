@@ -13,6 +13,7 @@ const routes: Routes = [
     {path: 'newfeeds', component: NewFeeds},
     {path: 'profile/:id', component: Profile,},
     {path: 'research-papers/:id', component: ResearchPapers,},
+    {path: 'account-setting', component: PaperDetail},
     {path: 'paper-detail/:id', component: PaperDetail}
 ];
 

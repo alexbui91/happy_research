@@ -229,6 +229,18 @@ a:hover{
     padding-left: 10px;
     font-size: 13px;
 }
+.show{
+    display: block !important;
+}
+.hide{
+    display: none !important;
+}
+.search-form{
+    transition: all .3s ease;
+}
+.search-auto{
+    top: 50px
+}
 .autocomplete .search-form{
     padding: 0 
 }
@@ -237,6 +249,16 @@ a:hover{
 }
 .search-item a{
     color: #333
+}
+.search-item p{
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+.search-form li{
+    padding: 10px;
+}
+.search-form li p:last-child{
+    margin-bottom: 0
 }
 .autocomplete .dropdown-item{
     background: none

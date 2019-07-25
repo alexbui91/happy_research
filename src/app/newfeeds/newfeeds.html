@@ -63,8 +63,8 @@
                 <div class="form-group autocomplete-form" [ngClass]="{'has-error': paperNoti.conference}">
                     <input type="text" class="form-control"
                         placeholder="Ex. ICDE or International Conference of Data Engineering"
-                        [(ngModel)]="paper.conference" name="conference" (keyup)="autoCompleteConf($event)">
-                    <div class="autocomplete" [ngClass]="{'visible': conferences.length, 'invisible': !conferences.length}">
+                        [(ngModel)]="paper.conference" name="conference" (keyup)="autoCompleteConf($event)" (focus)="confIn()" (focusout)="confOut()">
+                    <div class="autocomplete" [ngClass]="{'show': isShowConfSearch, 'hide': !isShowConfSearch}">
                         <ul class="dropdown-menu">
                             <li class="" *ngFor="let conf of conferences">
                                 <a class="link-button dropdown-item" (click)="paper.conference = conf.name; conferences=[]">

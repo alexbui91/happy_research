@@ -21,6 +21,7 @@ export class NewFeeds{
     abstract_display: String = new String("")
     comment_display: String = new String("")
     conferences: Array<object> = []
+    isShowConfSearch: boolean = false
     paperNoti: PaperNotification = new PaperNotification()
     @ViewChild("title", {static: false}) title: ElementRef;
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
@@ -37,11 +38,24 @@ export class NewFeeds{
         window.scrollTo(0,0)
     }
     autoCompleteConf(e: any){
-        this.services.autoCompleteConf(e.target.value).subscribe(
+        let s = e.target.value.trim().toLowerCase()
+        this.services.autoCompleteConf(s).subscribe(
             res => {
-                this.conferences = res["confs"]
+                let obj = res["confs"]
+                obj = obj as any[]
+                if(obj.length > 20){
+                    obj.splice(20, obj.length - 20)
+                    this.conferences = obj
+                }else
+                    this.conferences = obj
             }
         )
+    }
+    confOut(){
+        this.isShowConfSearch = false
+    }
+    confIn(){
+        this.isShowConfSearch = true
     }
     // get papers with user id or get all papers
     getPapers(){

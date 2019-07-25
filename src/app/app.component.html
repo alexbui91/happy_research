@@ -72,16 +72,25 @@
 			<div class="form-group with-button comment-form search-input autocomplete-form">
                 <div class='form-control js-user-search edit-comment-form reply-form' contenteditable="true" [textContent]=""
                     (input)="search_content=$event.target.textContent"
-                    (keyup)="search($event)" data-gramm_editor="false"></div>
+                    (keyup)="search($event)" data-gramm_editor="false" (focusout)="searchOut()" (focus)="searchIn()"></div>
                 <div class='placeholder' *ngIf="!search_content">Search...</div>
                     <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
                 <!-- <input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text" name="search" [(ngModel)]="search_content" [value]="globals.fullname"> -->
-                <div class="autocomplete" [ngClass]="{'visible': searchResults.length, 'invisible': !searchResults.length}">
+                <div class="autocomplete search-auto" [ngClass]="{'show': isShowSearchBox, 'hide': !isShowSearchBox}">
                     <ul class="dropdown-menu search-form">
                         <li class="" *ngFor="let res of searchResults">
                             <div class="dropdown-item search-item">
-                                <a class='link-button' [routerLink]="[ '/profile',res.read_by ]" (click)="searchResults=[]">{{res.fullname}}</a>: 
-                                <a class='link-button' [routerLink]="[ '/paper-detail',res.id ]" (click)="searchResults=[]">{{res.title}}</a>
+                                <p>
+                                    <a class='link-button' [routerLink]="[ '/profile',res.read_by ]" (click)="searchResults=[]">
+                                    <i class='fa fa-user-alt'></i> {{res.fullname}}</a>
+                                </p>
+                                <p>
+                                    <a class='link-button' [routerLink]="[ '/paper-detail',res.id ]" (click)="searchResults=[]">
+                                    <i class="fa fa-file-signature"></i> {{res.title}}</a>
+                                </p>
+                                <p *ngIf="res.research_id">
+                                    <a class='link-button' [routerLink]="[ '/research-papers',res.research_id ]" (click)="searchResults=[]">{{res.research_name}}</a>
+                                </p>
                             </div>
                         </li>
                     </ul>
