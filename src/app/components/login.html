@@ -11,13 +11,13 @@
                 <div class="form-group label-floating has-error" [ngClass]="{'has-error': loginNoti.username, 'is-focused': (login_focused || user.username), 'is-empty': (!login_focused && !user.username)}" (focusin)="login_focused = true" (focusout)="login_focused = false">
                     <label class="control-label">Username <sup><i class='fa fa-asterisk required'></i></sup></label>
                     <!-- <label class='has-error-line' *ngIf="loginNoti.username"> - {{ loginNoti.username }}</label> -->
-                    <input class="form-control" type="text" placeholder="" [(ngModel)]="user.username" name="username" autocomplete="username">
+                    <input class="form-control" type="text" placeholder="" [(ngModel)]="user.username" name="username" autocomplete="username" (keydown)="checkKey($event)">
                 </div>
                 
                 <div class="form-group label-floating has-error" [ngClass]="{'has-error': loginNoti.password, 'is-focused': (pw_focused || user.password), 'is-empty': (!pw_focused && !user.password)}" (focusin)="pw_focused = true" (focusout)="pw_focused = false">
                     <label class="control-label">Password <sup><i class='fa fa-asterisk required'></i></sup></label>
                     <!-- <label class='has-error-line' *ngIf="loginNoti.name"> - {{ loginNoti.password }}</label> -->
-                    <input class="form-control" type="password" [(ngModel)]="user.password" name="password" autocomplete="current-password">
+                    <input class="form-control" type="password" [(ngModel)]="user.password" name="password" autocomplete="current-password" (keydown)="checkKey($event)">
                 </div>
             </div>
         </div>

@@ -53,4 +53,9 @@ export class LoginModal{
             )
         }
     }
+    checkKey(e: any){
+        if(e.keyCode == 13){
+            this.login()
+        }
+    }
 }
