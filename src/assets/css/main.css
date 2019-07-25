@@ -2774,7 +2774,8 @@ img {
   .ui-block-title .more {
     padding-left: 25px;
     text-align: right;
-    width: 16px; }
+    width: 16px;
+    }
   .ui-block-title > * {
     margin-bottom: 0;
     display: table-cell;
@@ -6482,6 +6483,7 @@ ol ol li {
   .post__author .more {
     float: right;
     font-size: 16px;
+    top: -10px;
     }
 
 .post-additional-info {

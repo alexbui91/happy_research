@@ -30,7 +30,9 @@ export class Services{
             path += "/" + id
         return this.http.get(path)
     }
-
+    getPaperById(id: string){
+        return this.http.get(this.url + "/paper/" + id)
+    }
     login(data: object){
         let authen = data["username"] + ":" + data["password"];
         httpOptions.headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa(authen)});

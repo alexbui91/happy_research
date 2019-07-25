@@ -21,4 +21,11 @@ export class Globals{
         this.fullname = localStorage.getItem("fullname")
         this.duration = parseInt(localStorage.getItem("duration"))
     }
+    
+    strimParagraph(para: string){
+        let a = para.split(" ")
+        let l = a.length > 18 ? 18 : a.length
+        a = a.slice(0, l)
+        return a.join(" ")
+    }
 }

@@ -5,6 +5,7 @@ import {Home}  from './home/index';
 import { NewFeeds } from './newfeeds/index';
 import { Profile } from './profile/index';
 import { ResearchPapers } from './research-papers';
+import { PaperDetail } from './paper-detail';
 
 const routes: Routes = [
     // {path: '', component: Home, pathMatch: 'full'},
@@ -12,6 +13,7 @@ const routes: Routes = [
     {path: 'newfeeds', component: NewFeeds},
     {path: 'profile/:id', component: Profile,},
     {path: 'research-papers/:id', component: ResearchPapers,},
+    {path: 'paper-detail/:id', component: PaperDetail}
 ];
 
 @NgModule({
