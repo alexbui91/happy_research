@@ -1,0 +1,88 @@
+<div class="ui-block">
+    <div class="ui-block-title">
+        <h6 class="title">Personal Information</h6>
+    </div>
+    <div class="ui-block-content">
+        <!-- Personal Information Form  -->
+        <form class='user-info'>
+            <div class="row">
+                <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="form-group label-floating">
+                        <label class="control-label">Full name</label>
+                        <input class="form-control" placeholder="" type="text" [(ngModel)]="user.fullname" name="fullname">
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label">Email</label>
+                        <input class="form-control" placeholder="" type="email" value="" [(ngModel)]="user.email" name="email">
+                    </div>
+                    <div class="form-group label-floating">
+                        <div class="input-group">
+                            <label class="control-label">Birthday</label>
+                            <!-- <input name="datetimepicker" value="10/24/1984" /> -->
+                            <input class="form-control date-picker" placeholder="yyyy-mm-dd" name="birthday" [(ngModel)]="user.birthday" ngbDatepicker #birthday="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="birthday.toggle()" type="button">
+                                    <!-- <i class='fa fa-calendar-alt'></i> -->
+                                </button>
+                            </div>
+                        </div>
+                        <!-- <span class="input-group-addon">
+                            <svg class="olymp-month-calendar-icon icon">
+                                <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-month-calendar-icon">
+                                </use>
+                            </svg>
+                        </span> -->
+                    </div>
+                </div>
+
+                <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="form-group label-floating">
+                        <label class="control-label">Position</label>
+                        <input class="form-control" placeholder="" type="text" value="" [(ngModel)]="position" name="position">
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label">Gender</label>
+                        <select class="form-control" style="height: 58px" [(ngModel)]="user.gender" name="gender">
+                            <option value="0">Male</option>
+                            <option value="1">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label">Current Address</label>
+                        <input class="form-control" placeholder="" type="text" [(ngModel)]="user.address" name="address">
+                    </div>
+                </div>
+
+            </div>
+            <div class='row'>
+                <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="form-group label-floating">
+                        <label class="control-label">Message</label>
+                        <textarea class="form-control" placeholder="" style="height: 220px;" [(ngModel)]="user.message" name="message"></textarea>
+                    </div>
+                </div>
+                <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="form-group with-icon label-floating">
+                        <label class="control-label">Phone Number</label>
+                        <input class="form-control" placeholder="" type="text" [(ngModel)]="user.phone_number" name="phone_number">
+                        <i class="fab fa fa-phone" aria-hidden="true"></i>
+                    </div>
+                    <div class="form-group with-icon label-floating">
+                        <label class="control-label">Facebook Account</label>
+                        <input class="form-control" type="text" name="facebook" [(ngModel)]="user.facebook" name="facebook">
+                        <i class="fab fa-facebook-f c-facebook" aria-hidden="true"></i>
+                    </div>
+                    <div class="form-group with-icon label-floating">
+                        <label class="control-label">Twitter Account</label>
+                        <input class="form-control" type="text" name="twitter" [(ngModel)]="user.twitter" name="twitter">
+                        <i class="fab fa-twitter c-twitter" aria-hidden="true"></i>
+                    </div>
+                </div>    
+                <div class="col col-lg-12 col-md-12 col-sm-12 col-12">
+                    <button class="btn btn-primary btn-lg full-width">Save all Changes</button>
+                </div>
+            </div>
+        </form>
+        <!-- ... end Personal Information Form  -->
+    </div>
+</div>

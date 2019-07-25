@@ -17,6 +17,7 @@ import { Profile } from './profile';
 import { ResearchPapers } from './research-papers';
 import { PaperDetail } from './paper-detail';
 import { PaperComponent } from './components/paper';
+import { Account } from './account';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PaperComponent } from './components/paper';
     ResearchPapers,
     PaperComponent,
     PaperDetail,
+    Account,
     ResearchModal,
     LoginModal
   ],

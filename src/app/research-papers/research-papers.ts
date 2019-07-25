@@ -18,6 +18,7 @@ export class ResearchPapers implements AfterViewInit{
     research: Research = new Research()
     @ViewChild(NewFeeds, {static: false}) newfeeds: NewFeeds
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals, private route: ActivatedRoute){
+        this.globals.page_type = 1
         this.route.params.subscribe((params: Params) => {
             this.view_id = params["id"]
         })

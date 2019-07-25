@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background: #edf2f6;
+}
 .page-has-left-panels {
     padding-left: 0
 }
@@ -271,4 +274,11 @@ a:hover{
     font-size: 14px;
     display: inline;
     top: 12px;
+}
+.user-info .btn.calendar{
+    margin: 0;
+    border-color: #ced4da;
+}
+.control-label{
+    z-index: 4;
 }

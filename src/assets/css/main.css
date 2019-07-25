@@ -2785,7 +2785,8 @@ img {
     .ui-block-title.ui-block-title-small .title {
       font-size: 9px;
       text-transform: uppercase;
-      color: #9a9fbf; }
+      color: #333;
+      }
   .ui-block-title:first-child {
     border-top: none; }
   .ui-block-title .btn {

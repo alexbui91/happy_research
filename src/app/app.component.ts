@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 
 import { Globals } from './globals'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap'
 import { LoginModal } from './components/login_modal'
 import { Services } from './app.services';
-import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -17,8 +16,10 @@ export class AppComponent {
     search_content: string = ""
     searchResults: Array<object> = []
     isShowSearchBox: boolean = false
-    constructor(private globals: Globals, private rmodal: NgbModal, private services: Services) {
+    selectedDate:  NgbDateStruct
+    constructor(private globals: Globals, private rmodal: NgbModal, private services: Services, private calendar: NgbCalendar) {
         this.globals.loadToken()
+        this.selectedDate = this.calendar.getToday()
         this.services.getConferences().subscribe(
             res => {
                 let obj = res["confs"]

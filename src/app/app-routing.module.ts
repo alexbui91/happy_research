@@ -6,6 +6,7 @@ import { NewFeeds } from './newfeeds/index';
 import { Profile } from './profile/index';
 import { ResearchPapers } from './research-papers';
 import { PaperDetail } from './paper-detail';
+import { Account } from './account';
 
 const routes: Routes = [
     // {path: '', component: Home, pathMatch: 'full'},
@@ -13,7 +14,7 @@ const routes: Routes = [
     {path: 'newfeeds', component: NewFeeds},
     {path: 'profile/:id', component: Profile,},
     {path: 'research-papers/:id', component: ResearchPapers,},
-    {path: 'account-setting', component: PaperDetail},
+    {path: 'account-setting', component: Account},
     {path: 'paper-detail/:id', component: PaperDetail}
 ];
 

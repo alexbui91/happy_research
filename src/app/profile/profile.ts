@@ -16,6 +16,7 @@ export class Profile implements AfterViewInit{
     user: object = {}
     @ViewChild(NewFeeds, {static: false}) newfeeds: NewFeeds
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals, private route: ActivatedRoute){
+        this.globals.page_type = 1
         this.route.params.subscribe((params: Params) => {
             this.view_id = params["id"]
             this.services.getUserInfo(this.view_id).subscribe(

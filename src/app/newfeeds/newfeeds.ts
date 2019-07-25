@@ -25,6 +25,7 @@ export class NewFeeds{
     paperNoti: PaperNotification = new PaperNotification()
     @ViewChild("title", {static: false}) title: ElementRef;
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
+        this.globals.page_type = 1
         if(this.auto){
             this.getPapers()
         }
@@ -47,7 +48,7 @@ export class NewFeeds{
                     obj.splice(20, obj.length - 20)
                     this.conferences = obj
                 }else
-                    this.conferences = obj
+                    this.conferences = obj 
             }
         )
     }
