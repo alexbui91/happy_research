@@ -15,8 +15,8 @@ export class AppComponent {
     title = 'happyresearch';
     conferences: Array<object> = []
     search_content: string = ""
+    searchResults: Array<object> = []
     constructor(private globals: Globals, private rmodal: NgbModal, private services: Services) {
-        this.globals.key_search_display = new String("")
         this.globals.loadToken()
         this.services.getConferences().subscribe(
             res => {
@@ -93,11 +93,34 @@ export class AppComponent {
         return res
     }
     search(e: any) {
-        if (e.keyCode == 13) {
-            e.preventDefault()
-            this.services.search(e.target.textContent).subscribe()
-        }
-
-
+        // if (e.keyCode == 13) {
+            // e.preventDefault()
+            // let s = e.target.textContent.toLowerCase()
+        this.searchAction()   
+        // }
+    }
+    searchAction(){
+        let s = this.search_content.toLowerCase()
+        s = s.trim()
+        if(s){
+            this.services.search(s).subscribe(
+                res => {
+                    if(res["papers"]){
+                        let obj = res["papers"]
+                        obj = obj as any[]
+                        if(obj.length > 10){
+                            this.searchResults = obj.splice(10, obj.length - 10)
+                        }else{
+                            this.searchResults = obj
+                        }
+                    }
+                    
+                },
+                error => {
+    
+                }
+            )
+        }else
+            this.searchResults = []
     }
 }

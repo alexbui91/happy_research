@@ -18,6 +18,7 @@ export class PaperDetail implements AfterViewInit{
         this.route.params.subscribe((params: Params) => {
             this.paper_id = params["id"]
         })
+        window.scrollTo(0,0)
     }
 
     ngAfterViewInit(){

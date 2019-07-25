@@ -21,6 +21,7 @@ export class ResearchPapers implements AfterViewInit{
         this.route.params.subscribe((params: Params) => {
             this.view_id = params["id"]
         })
+        window.scrollTo(0,0)
     }
 
     ngAfterViewInit(){
@@ -36,7 +37,6 @@ export class ResearchPapers implements AfterViewInit{
                     }
                     
                     this.newfeeds.paper.research_id = parseInt(this.view_id)
-                    this.globals.key_search_display = new String(this.research.name)
                 }
             }
         )

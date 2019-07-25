@@ -8,7 +8,6 @@ export class Globals{
     token: string = ''
     fullname: string = ""
     duration: number = 600
-    key_search_display: String = new String("")
     saveToken(){
         localStorage.setItem("token", this.token)
         localStorage.setItem("userId", this.userId)
@@ -21,7 +20,7 @@ export class Globals{
         this.fullname = localStorage.getItem("fullname")
         this.duration = parseInt(localStorage.getItem("duration"))
     }
-    
+
     strimParagraph(para: string){
         let a = para.split(" ")
         let l = a.length > 18 ? 18 : a.length

@@ -24,7 +24,6 @@ export class NewFeeds{
     paperNoti: PaperNotification = new PaperNotification()
     @ViewChild("title", {static: false}) title: ElementRef;
     constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
-        this.globals.key_search_display = new String("")
         if(this.auto){
             this.getPapers()
         }
@@ -35,6 +34,7 @@ export class NewFeeds{
                 }
             }
         )
+        window.scrollTo(0,0)
     }
     autoCompleteConf(e: any){
         this.services.autoCompleteConf(e.target.value).subscribe(

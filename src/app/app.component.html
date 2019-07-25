@@ -69,14 +69,24 @@
 
 	<div class="header-content-wrapper">
 		<form class="search-bar w-search notification-list friend-requests">
-			<div class="form-group with-button comment-form search-input">
-                <div class='form-control js-user-search edit-comment-form reply-form' contenteditable="true" [textContent]="globals.key_search_display"
+			<div class="form-group with-button comment-form search-input autocomplete-form">
+                <div class='form-control js-user-search edit-comment-form reply-form' contenteditable="true" [textContent]=""
                     (input)="search_content=$event.target.textContent"
-                    (keydown)="search($event)" data-gramm_editor="false"></div>
-                <div class='placeholder' *ngIf="!globals.key_search_display">Search...</div>
+                    (keyup)="search($event)" data-gramm_editor="false"></div>
+                <div class='placeholder' *ngIf="!search_content">Search...</div>
                     <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
-				<!-- <input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text" name="search" [(ngModel)]="search_content" [value]="globals.fullname"> -->
-				<button>
+                <!-- <input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text" name="search" [(ngModel)]="search_content" [value]="globals.fullname"> -->
+                <div class="autocomplete" [ngClass]="{'visible': searchResults.length, 'invisible': !searchResults.length}">
+                    <ul class="dropdown-menu search-form">
+                        <li class="" *ngFor="let res of searchResults">
+                            <div class="dropdown-item search-item">
+                                <a class='link-button' [routerLink]="[ '/profile',res.read_by ]" (click)="searchResults=[]">{{res.fullname}}</a>: 
+                                <a class='link-button' [routerLink]="[ '/paper-detail',res.id ]" (click)="searchResults=[]">{{res.title}}</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+				<button (click)="searchAction()">
 					<svg class="olymp-magnifying-glass-icon"><use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use></svg>
 				</button>
 			</div>

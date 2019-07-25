@@ -77,7 +77,7 @@ export class Services{
     }
     // overall search by key words
     search(key: string){
-        return this.http.get(this.url + "/search/" + encodeURI(key))
+        return this.http.get(this.url + "/paper/search/" + encodeURI(key))
     }
     // get all papers by research
     getResearchPapers(id: string){
