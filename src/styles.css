@@ -179,6 +179,7 @@ a:hover{
 }
 .comment-form .edit-comment-form{
     height: 100%;
+    overflow: auto
 }
 .search-input{
     border: none
