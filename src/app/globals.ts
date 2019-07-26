@@ -6,6 +6,7 @@ export class Globals{
     page: string = ''
     userId: string = ''
     token: string = ''
+    username: string = ''
     fullname: string = ""
     duration: number = 600
     page_type: number = 1

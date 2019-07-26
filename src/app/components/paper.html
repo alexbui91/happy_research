@@ -1,7 +1,7 @@
 <article class="hentry post">
     <div class='hentry-inner' [ngClass]="{'post-read-more': info.active}">
         <div class="post__author author vcard inline-items">
-            <img src="assets/img/author-page.jpg" alt="author">
+            <img [src]="'assets/img/avatar/'+info.read_by+'.jpg'" alt="author">
 
             <div class="author-date">
                 <div>
@@ -67,7 +67,7 @@
 <ul class="comments-list" *ngIf="info.list_comments && info.list_comments.length">
     <li class="comment-item" *ngFor="let c of info.list_comments; let i = index">
         <div class="post__author author vcard inline-items">
-            <img src="assets/img/author-page.jpg" alt="author">
+            <img [src]="'assets/img/avatar/' + c.researcher_id + '.jpg'" alt="author">
 
             <div class="author-date">
                 <!-- [routerLink]="[ '/profile', c.userId ]" -->
@@ -113,7 +113,7 @@
 
 <form class="comment-form inline-items">
     <div class="post__author author vcard inline-items">
-        <img src="assets/img/author-page.jpg" alt="author">
+        <img [src]="'assets/img/avatar/'+info.read_by+'.jpg'" alt="author">
         <div class="form-group comment-form">
             <div contenteditable="true" class='edit-comment-form' [innerHtml]="info.comment"
                 (input)="info.newComment=$event.target.innerHTML" (keydown)="commentKeyDown(info, $event)"></div>

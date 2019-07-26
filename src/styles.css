@@ -286,3 +286,11 @@ a:hover{
 .control-label{
     z-index: 4;
 }
+.author-thumb .avatar{
+    height: 36px;
+    width: auto
+}
+.comments-list .post__author img {
+    width: auto;
+    height: 36px;
+}

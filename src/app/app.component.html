@@ -21,7 +21,7 @@
             <div class="control-block">
                 <div class="author-page author vcard inline-items">
                     <div class="author-thumb">
-                        <img alt="author" src="assets/img/author-page.jpg" class="avatar">
+                        <img alt="author" [src]="'assets/img/avatar/'+globals.userId+'.jpg'" class="avatar">
                         <span class="icon-status online"></span>
                     </div>
                     <a [routerLink]="['/profile', globals.userId]" class="author-name fn">
@@ -149,7 +149,7 @@
 
             <div class="author-page author vcard inline-items more" *ngIf="globals.token">
                 <div class="author-thumb">
-                    <img alt="author" src="assets/img/author-page.jpg" class="avatar">
+                    <img alt="author" [src]="'assets/img/avatar/'+globals.userId+'.jpg'" class="avatar">
                     <span class="icon-status online"></span>
                     <div class="more-dropdown more-with-triangle">
                         <div class="mCustomScrollbar" data-mcs-theme="dark">
