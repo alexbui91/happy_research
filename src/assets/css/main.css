@@ -11196,7 +11196,9 @@ ol ol li {
 .w-activity-feed .author-thumb {
   height: 28px;
   width: 28px;
-  float: left; }
+  float: left;
+  text-align: center;
+  }
   .w-activity-feed .author-thumb img {
     height: 28px;
     width: 28px;

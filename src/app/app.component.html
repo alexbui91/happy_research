@@ -325,9 +325,41 @@
         <aside class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12" *ngIf="globals.page_type == 1">
             <div class="ui-block">
                 <div class="ui-block-title">
-                    <h6 class="title">Lab's Notices</h6>
+                    <h6 class="title"><i class='fa fa-download'></i> Resources</h6>
                 </div>
                 <!-- W-Activity-Feed -->
+                <ul class="widget w-activity-feed notification-list">
+                    <li>
+                        <div class="author-thumb">
+                            <i class='fa fa-file-excel'></i>
+                        </div>
+                        <div class="notification-event">
+                            <a href="https://gdurl.com/LLzD/download" class="h6 notification-friend">BK21 acceptable conferences</a> 
+                        </div>
+                    </li>
+                    <li>
+                        <div class="author-thumb">
+                            <i class='fa fa-file-excel'></i>
+                        </div>
+                        <div class="notification-event">
+                            <a href="https://gdurl.com/FAto/download" class="h6 notification-friend">ECE SCI level conferences (2018) </a> 
+                        </div>
+                    </li>
+                    <li>
+                        <div class="author-thumb">
+                            <i class='fa fa-file-excel'></i>
+                        </div>
+                        <div class="notification-event">
+                            <a href="https://gdurl.com/mJFo/download" class="h6 notification-friend">ECE SCI(E) level conferences (2013) </a> 
+                        </div>
+                    </li>
+                </ul>
+                <!-- .. end W-Activity-Feed -->
+            </div>
+            <!-- <div class="ui-block">
+                <div class="ui-block-title">
+                    <h6 class="title">Lab's Notices</h6>
+                </div>
                 <ul class="widget w-activity-feed notification-list">
                     <li *ngFor="let item of [1,2,3,4,5]">
                         <div class="author-thumb">
@@ -340,13 +372,8 @@
                                     datetime="2004-07-24T18:18">2 mins ago</time></span>
                         </div>
                     </li>
-
-
                 </ul>
-
-                <!-- .. end W-Activity-Feed -->
-            </div>
-
+            </div> -->
         </aside>
         <!-- ... end Right Sidebar -->
     </div>
