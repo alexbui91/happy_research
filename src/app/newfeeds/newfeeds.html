@@ -67,7 +67,7 @@
                             placeholder="Ex. ICDE or International Conference of Data Engineering"
                             [(ngModel)]="paper.conference" name="conference" (keyup)="autoCompleteConf($event)"
                             (focus)="confIn()" (focusout)="confOut()">
-                        <div class="autocomplete" [ngClass]="{'show': isShowConfSearch, 'hide': !isShowConfSearch}">
+                        <div class="autocomplete" [ngClass]="{'show': (isShowConfSearch && conferences.length), 'hide': (!isShowConfSearch || !conferences.length)}">
                             <ul class="dropdown-menu">
                                 <li class="" *ngFor="let conf of conferences">
                                     <a class="link-button dropdown-item"

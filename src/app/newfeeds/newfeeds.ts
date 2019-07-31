@@ -53,7 +53,9 @@ export class NewFeeds{
         )
     }
     confOut(){
-        this.isShowConfSearch = false
+        setTimeout(()=>{
+            this.isShowConfSearch = false
+        }, 100)
     }
     confIn(){
         this.isShowConfSearch = true
@@ -177,7 +179,9 @@ export class NewFeeds{
         this.abstract_display = new String("")
         this.comment_display = new String("")
     }
-
+    test(){
+        console.log(12321)
+    }
     // strim shorter paragraph to display
     // showMore(p: any){
     //     p["showing_abstract"] = this.strimParagraph(p)

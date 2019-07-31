@@ -128,7 +128,10 @@ export class AppComponent {
             this.searchResults = []
     }
     searchOut(){
-        this.isShowSearchBox = false
+        setTimeout(()=>{
+            this.isShowSearchBox = false
+        }, 100)
+        
     }
     searchIn(){
         this.isShowSearchBox = true

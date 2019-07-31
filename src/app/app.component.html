@@ -87,7 +87,7 @@
                 <div class='placeholder' *ngIf="!search_content">Search...</div>
                 <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
                 <!-- <input class="form-control js-user-search" placeholder="Search papers or conferences..." type="text" name="search" [(ngModel)]="search_content" [value]="globals.fullname"> -->
-                <div class="autocomplete search-auto" [ngClass]="{'show': isShowSearchBox, 'hide': !isShowSearchBox}">
+                <div class="autocomplete search-auto" [ngClass]="{'show': (isShowSearchBox && searchResults.length), 'hide': (!isShowSearchBox || !searchResults.length)}">
                     <ul class="dropdown-menu search-form">
                         <li class="" *ngFor="let res of searchResults">
                             <div class="dropdown-item search-item">
