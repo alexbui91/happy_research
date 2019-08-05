@@ -130,7 +130,7 @@ export class AppComponent {
     searchOut(){
         setTimeout(()=>{
             this.isShowSearchBox = false
-        }, 100)
+        }, 500)
         
     }
     searchIn(){

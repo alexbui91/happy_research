@@ -55,7 +55,7 @@ export class NewFeeds{
     confOut(){
         setTimeout(()=>{
             this.isShowConfSearch = false
-        }, 100)
+        }, 500)
     }
     confIn(){
         this.isShowConfSearch = true
