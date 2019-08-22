@@ -5,7 +5,7 @@ import {PaperNotification} from '../models/paper.noti'
 import {ResearchModal} from '../components/research'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { Globals } from '../globals'
-import { DOCUMENT } from '@angular/common';
+// import { DOCUMENT } from '@angular/common';
 
 @Component({
     selector: "newfeeds",
@@ -161,6 +161,9 @@ export class NewFeeds{
 
     openResearchModal(){
         const modalRef = this.rmodal.open(ResearchModal)
+        modalRef.result.then((data) => {
+            this.researches.splice(0, 0, data)
+        })
     }
 
     editPaper(idx: number, p: any){

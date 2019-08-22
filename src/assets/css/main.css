@@ -6480,7 +6480,9 @@ ol ol li {
     height: 40px;
     border-radius: 100%;
     overflow: hidden;
-    margin-right: 12px; }
+    margin-right: 12px;
+    border: 1px solid #ccc;
+    }
   .post__author .more {
     float: right;
     font-size: 16px;
