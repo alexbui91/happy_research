@@ -39,10 +39,10 @@
                         <span class='type' *ngIf="res.type == 2">Project</span>
                     </td>
                     <td class="freshness">
-                        <span class="date">{{res.start_date.slice(0, 10)}}</span>
+                        <span class="date" *ngIf="res.start_date &&  res.start_date.length">{{res.start_date.slice(0, 10)}}</span>
                     </td>
                     <td class="freshness">
-                        <span class="date">{{res.end_date_plan.slice(0, 10)}}</span>
+                        <span class="date" *ngIf="res.end_date_plan && res.end_date_plan.length">{{res.end_date_plan.slice(0, 10)}}</span>
                     </td>
                     <td class="button">
                         <button class="btn btn-primary btn-sm" (click)="edit(i, res.created_by)" [ngClass]="{'disabled': globals.userId != res.created_by}"><i class='fa fa-edit'></i></button>

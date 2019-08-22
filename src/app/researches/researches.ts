@@ -67,7 +67,8 @@ export class Researches{
     create(){
         const modal = this.rmodal.open(ResearchModal)
         modal.result.then((data) => {
-            this.researches.splice(0,0,data)
+            console.log(data)
+            this.researches.splice(0,0,data["obj"])
         }, ()=>{
 
         })
