@@ -52,6 +52,16 @@ export class Services{
     saveResearch(data: object){
         return this.http.post(this.url + "/research/0", data)
     }
+
+    removeResearch(id: number, uid: string){
+        let options = {body: {id: id, created_by: uid}, headers: httpOptions.headers}
+        return this.http.delete(this.url + "/research/" + id, options)
+    }
+
+    editResearch(data: object){
+        return this.http.post(this.url + "/research/" + data["id"], data)
+    }
+
     getResearches(){
         return this.http.get(this.url + "/research/0")
     }

@@ -163,7 +163,7 @@ export class NewFeeds{
         const modalRef = this.rmodal.open(ResearchModal)
         modalRef.result.then((data) => {
             this.researches.splice(0, 0, data)
-        })
+        }, ()=>{})
     }
 
     editPaper(idx: number, p: any){
@@ -182,9 +182,7 @@ export class NewFeeds{
         this.abstract_display = new String("")
         this.comment_display = new String("")
     }
-    test(){
-        console.log(12321)
-    }
+
     // strim shorter paragraph to display
     // showMore(p: any){
     //     p["showing_abstract"] = this.strimParagraph(p)

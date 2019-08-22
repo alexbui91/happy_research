@@ -20,6 +20,7 @@ export class AppComponent {
     constructor(private globals: Globals, private rmodal: NgbModal, private services: Services, private calendar: NgbCalendar) {
         this.globals.loadToken()
         this.selectedDate = this.calendar.getToday()
+        console.log(this.selectedDate)
         this.services.getConferences().subscribe(
             res => {
                 let obj = res["confs"]

@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-body{
+.bg-custom{
     background: #edf2f6;
 }
 .page-has-left-panels {
@@ -293,4 +293,12 @@ a:hover{
 .comments-list .post__author img {
     width: auto;
     height: 36px;
+}
+
+.researches .button button{
+    margin-right:5px;
+}
+.researches td{
+    padding: 10px 10px;
+    text-align: center
 }

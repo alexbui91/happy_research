@@ -18,6 +18,7 @@ import { ResearchPapers } from './research-papers';
 import { PaperDetail } from './paper-detail';
 import { PaperComponent } from './components/paper';
 import { Account } from './account';
+import { Researches } from './researches';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { Account } from './account';
     PaperComponent,
     PaperDetail,
     Account,
+    Researches,
     ResearchModal,
     LoginModal
   ],

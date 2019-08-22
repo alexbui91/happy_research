@@ -7,6 +7,7 @@ import { Profile } from './profile/index';
 import { ResearchPapers } from './research-papers';
 import { PaperDetail } from './paper-detail';
 import { Account } from './account';
+import { Researches } from './researches';
 
 const routes: Routes = [
     // {path: '', component: Home, pathMatch: 'full'},
@@ -15,7 +16,8 @@ const routes: Routes = [
     {path: 'profile/:id', component: Profile,},
     {path: 'research-papers/:id', component: ResearchPapers,},
     {path: 'account-setting', component: Account},
-    {path: 'paper-detail/:id', component: PaperDetail}
+    {path: 'paper-detail/:id', component: PaperDetail},
+    {path: 'researches', component: Researches}
 ];
 
 @NgModule({
