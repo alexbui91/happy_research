@@ -162,7 +162,7 @@ export class NewFeeds{
     openResearchModal(){
         const modalRef = this.rmodal.open(ResearchModal)
         modalRef.result.then((data) => {
-            this.researches.splice(0, 0, data)
+            this.researches.splice(0, 0, data["obj"])
         }, ()=>{})
     }
 
