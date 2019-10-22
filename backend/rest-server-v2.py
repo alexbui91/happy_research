@@ -69,20 +69,33 @@ class Database:
         self.close()
         return results
 
-    def list_papers(self):
-        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id LEFT JOIN research c ON a.research_id = c.id ORDER BY read_date DESC")
+    def list_papers(self, offsetStart, pageSize):
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id LEFT JOIN research c ON a.research_id = c.id ORDER BY read_date DESC LIMIT %s, %s", (offsetStart, pageSize))
         result = self.cur.fetchall()
         self.close()
         return result
 
-    def list_papers_by_researcher(self, rid):
-        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE read_by='" + rid + "' ORDER BY read_date DESC")
+    def list_papers_by_researcher(self, rid, offsetStart, pageSize):
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id LEFT JOIN research c ON a.research_id = c.id WHERE read_by='" + rid + "' ORDER BY read_date DESC LIMIT %s, %s", (offsetStart, pageSize))
+        result = self.cur.fetchall()
+        self.close()
+        return result
+
+    def list_papers_by_project(self, project_id, offsetStart, pageSize):
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id JOIN research c ON a.research_id = c.id WHERE a.research_id=%s ORDER BY read_date DESC LIMIT %s, %s", (str(project_id), offsetStart, pageSize))
         result = self.cur.fetchall()
         self.close()
         return result
 
     def get_paper(self, id):
-        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id WHERE a.id='" + id + "'")
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id LEFT JOIN research c ON a.research_id = c.id WHERE a.id='" + id + "'")
+        result = self.cur.fetchall()
+        self.close()
+        return result
+
+    def search_papers(self, search_key):
+        search_key = search_key.lower()
+        self.cur.execute("SELECT a.id, title, authors, conference, year, a.affiliation, abstract, comments, read_by, read_date, research_id, c.name AS research_name, a.paper_keys, a.paper_link, b.fullname FROM paper a JOIN researcher b ON a.read_by = b.id LEFT JOIN research c ON a.research_id = c.id WHERE lower(title) LIKE %s OR lower(authors) LIKE %s OR lower(conference) LIKE %s OR lower(b.fullname) LIKE %s  ORDER BY read_date DESC", (search_key, search_key, search_key, search_key))
         result = self.cur.fetchall()
         self.close()
         return result
@@ -161,25 +174,64 @@ class Database:
         self.cur.execute("SELECT id, name, goals, start_date, end_date_plan, end_date_actual, type FROM research WHERE id = %s", (id))
         results = self.cur.fetchall()
         self.close()
-        if (results and len(results) > 0):
-            return results[0]
-        return None
+        return results
 
     def list_research(self):
-        self.cur.execute("SELECT id, name, goals, start_date, end_date_plan, end_date_actual, type FROM research ORDER BY type, start_date DESC")
+        self.cur.execute("SELECT id, name, goals, start_date, end_date_plan, end_date_actual, type, created_by FROM research ORDER BY type, start_date DESC")
         results = self.cur.fetchall()
         self.close()
         return results
 
     def insert_research(self, name, goals, start_date, end_date_plan, created_by, type):
-        num_row = self.cur.execute("INSERT INTO research(name, goals, start_date, end_date_plan, created_by, type) " +
-                          "VALUES (%s, %s, %s, %s, %s, %s)", (name, goals, start_date, end_date_plan, created_by, type))
+        self.cur.execute("INSERT INTO research(name, goals, start_date, end_date_plan, created_by, type) VALUES (%s, %s, %s, %s, %s, %s)", (name, goals, start_date, end_date_plan, created_by, type))
+        self.con.commit()
+        # get new id
+        self.cur.execute("SELECT MAX(id) AS id FROM research")
+        result = self.cur.fetchall()
+        self.close()
+        return result[0]['id']
+
+    def update_research(self, id, name, goals, start_date, end_date_plan, created_by, type):
+        self.cur.execute("UPDATE research SET name = %s, goals = %s, start_date = %s, end_date_plan = %s, created_by = %s, type = %s WHERE id = %s", (name, goals, start_date, end_date_plan, created_by, type, id))
+        self.con.commit()
+        self.close()
+        return id
+
+    def delete_research(self, id, created_by):
+        # check if research not use in other paper
+        self.cur.execute("SELECT COUNT(1) AS count FROM paper WHERE research_id = %s", (str(id)))
+        result = self.cur.fetchall()
+        if (result and result[0]['count'] > 0):
+            return 0
+        # delete
+        num_row = self.cur.execute("DELETE FROM research WHERE id = %s AND created_by = %s", (str(id), str(created_by)))
         self.con.commit()
         self.close()
         return num_row
 
-    def delete_research(self, id):
-        num_row = self.cur.execute("DELETE FROM research WHERE id = %s", (id))
+    def get_experiments(self, research_id, researcher_id):
+        self.cur.execute("SELECT a.id, a.research_id, a.researcher_id, a.start_date, a.end_date, a.goal, a.input, a.method, a.result FROM experiment a WHERE a.research_id = %s AND a.researcher_id = %s ORDER BY a.start_date DESC", (research_id, researcher_id))
+        result = self.cur.fetchall()
+        self.close()
+        return result
+
+    def insert_experiment(self, research_id, researcher_id, start_date, end_date, goal, input, method, result):
+        self.cur.execute("INSERT INTO experiment(research_id, researcher_id, start_date, end_date, goal, input, method, result) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (research_id, researcher_id, start_date, end_date, goal, input, method, result))
+        self.con.commit()
+        # get new created id
+        self.cur.execute("SELECT MAX(id) AS id FROM experiment")
+        result = self.cur.fetchall()
+        self.close()
+        return result[0]['id']
+
+    def update_experiment(self, id, research_id, researcher_id, start_date, end_date, goal, input, method, result):
+        self.cur.execute("UPDATE experiment SET research_id = %s, researcher_id = %s, start_date = %s, end_date = %s, goal = %s, input = %s, method = %s, result = %s WHERE id = %s", (research_id, researcher_id, start_date, end_date, goal, input, method, result, id))
+        self.con.commit()
+        self.close()
+        return id
+
+    def delete_experiment(self, id,  research_id, researcher_id):
+        num_row = self.cur.execute("DELETE FROM experiment WHERE id = %s AND research_id = %s AND researcher_id = %s", (id, research_id, researcher_id))
         self.con.commit()
         self.close()
         return num_row
@@ -249,14 +301,30 @@ class PaperListAPI(Resource):
     #decorators = [auth.login_required]
 
     def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('offsetStart', type=int, location='json')
+        self.reqparse.add_argument('pageSize', type=int, location='json')
         super(PaperListAPI, self).__init__()
 
     def get(self, rid=0):
+        args = self.reqparse.parse_args()
+        if not args:
+            offsetStart = 0
+            pageSize = 99999
+        else:
+            inputs = {}
+            for k, v in args.items():
+                inputs[k] = v
+            if not inputs['offsetStart']:
+                offsetStart = 0
+            if not inputs['pageSize']:
+                pageSize = 99999
+
         db = Database()
         if not rid or rid == 0:
-             papers = db.list_papers()
+             papers = db.list_papers(offsetStart, pageSize)
         else:
-             papers = db.list_papers_by_researcher(str(rid))
+             papers = db.list_papers_by_researcher(str(rid), offsetStart, pageSize)
         for paper in papers:
             read_date = paper['read_date']
             paper['read_date'] = read_date.strftime('%Y/%m/%d %H:%M:%S')
@@ -405,21 +473,37 @@ class ResearchAPI(Resource):
         self.reqparse.add_argument('end_date_plan', type=str, location='json')
         self.reqparse.add_argument('created_by', type=int, location='json')
         self.reqparse.add_argument('type', type=int, location='json')
+        self.reqparse.add_argument('offsetStart', type=int, location='json')
+        self.reqparse.add_argument('pageSize', type=int, location='json')
         super(ResearchAPI, self).__init__()
 
     def get(self, id=0):
+        args = self.reqparse.parse_args()
+        inputs = {}
+        for k, v in args.items():
+            inputs[k] = v
+        if not inputs['offsetStart']:
+            offsetStart = 0
+        if not inputs['pageSize']:
+            pageSize = 99999
+
         db = Database()
         if id > 0:
             research_list = db.get_research(str(id))
+            db = Database()
+            papers = db.list_papers_by_project(str(id), offsetStart, pageSize)
         else:
             research_list = db.list_research()
+            papers = []
         for r in research_list:
             r['start_date'] = r['start_date'].strftime('%Y/%m/%d %H:%M:%S')
             if (r['end_date_plan']):
                 r['end_date_plan'] = r['end_date_plan'].strftime('%Y/%m/%d %H:%M:%S')
             if (r['end_date_actual']):
                 r['end_date_actual'] = r['end_date_actual'].strftime('%Y/%m/%d %H:%M:%S')
-        return {'researches': research_list}
+        for p in papers:
+            p['read_date'] = p['read_date'].strftime('%Y/%m/%d %H:%M:%S')
+        return [{'researches': research_list}, {'papers': papers}]
 
     def post(self, id=0):
         args = self.reqparse.parse_args()
@@ -429,16 +513,85 @@ class ResearchAPI(Resource):
         if not inputs['start_date']:
             now = datetime.now()
             inputs['start_date'] = now.strftime('%Y/%m/%d %H:%M:%S')
+        if not inputs['end_date_plan']:
+           inputs['end_date_plan'] = None
         db = Database()
-        db.insert_research(inputs['name'], inputs['goals'], inputs['start_date'], inputs['end_date_plan'], inputs['created_by'], inputs['type'])
-        return {'success': 'true'}
+        if id == 0:
+            new_id = db.insert_research(inputs['name'], inputs['goals'], inputs['start_date'], inputs['end_date_plan'], inputs['created_by'], inputs['type'])
+        else:
+            new_id = db.update_research(str(id), inputs['name'], inputs['goals'], inputs['start_date'], inputs['end_date_plan'], inputs['created_by'], inputs['type'])
+        return {'id': new_id}
 
     def delete(self, id):
-        task = [task for task in tasks if task['id'] == id]
-        if len(task) == 0:
-            abort(404)
-        tasks.remove(task[0])
-        return {'result': True}
+      try:
+        args = self.reqparse.parse_args()
+        inputs = {}
+        for k, v in args.items():
+             inputs[k] = v
+        db = Database()
+        num_row = db.delete_research(str(id), inputs['created_by'])
+        return {'num_row': num_row}
+      except Exception as e:
+        return {'error': str(e)}
+
+class ExperimentAPI(Resource):
+    #decorators = [auth.login_required]
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('experiment_id', type=int, location='json')
+        self.reqparse.add_argument('researcher_id', type=int, location='json')
+        self.reqparse.add_argument('research_id', type=int, location='json')
+        self.reqparse.add_argument('start_date', type=str, location='json')
+        self.reqparse.add_argument('end_date', type=str, location='json')
+        self.reqparse.add_argument('goal', type=str, location='json')
+        self.reqparse.add_argument('input', type=str, location='json')
+        self.reqparse.add_argument('method', type=str, location='json')
+        self.reqparse.add_argument('result', type=str, location='json')
+        super(ExperimentAPI, self).__init__()
+
+    def get(self, research_id):
+        db = Database()
+        results = db.get_experiments(str(research_id))
+        for result in results:
+            start_date = result['start_date']
+            if start_date:
+                result['start_date'] = start_date.strftime('%Y/%m/%d %H:%M:%S')
+            end_date = result['end_date']
+            if end_date:
+                result['end_date'] = end__date.strftime('%Y/%m/%d %H:%M:%S')
+        return {'experiments': results}
+
+    def post(self, research_id=0):
+      try:
+        args = self.reqparse.parse_args()
+        inputs = {}
+        for k, v in args.items():
+             inputs[k] = v
+        if not inputs['start_date']:
+            now = datetime.now()
+            inputs['start_date'] = now.strftime('%Y/%m/%d %H:%M:%S')
+        db = Database()
+        if not inputs['experiment_id']:
+            new_id = db.insert_experiment(inputs['research_id'], inputs['researcher_id'], inputs['start_date'], inputs['end_date'], inputs['goal'], inputs['input'], inputs['method'], inputs['result'])
+        else:
+            new_id = db.update_experiment(inputs['experiment_id'], inputs['research_id'], inputs['researcher_id'], inputs['start_date'], inputs['end_date'], inputs['goal'], inputs['input'], inputs['method'], inputs['result'])
+        return {'id': new_id}
+
+      except Exception as e:
+        return {'error': str(e)}
+
+    def delete(self, research_id=0):
+      try:
+        args = self.reqparse.parse_args()
+        inputs = {}
+        for k, v in args.items():
+             inputs[k] = v
+        db = Database()
+        num_row = db.delete_experiment(str(inputs['experiment_id']), str(inputs['research_id']), str(inputs['researcher_id']))
+        return {'num_row': num_row}
+      except Exception as e:
+        return {'error': str(e)}
 
 class ConferenceAPI(Resource):
     #decorators = [auth.login_required]
@@ -472,13 +625,27 @@ class ConferenceSearchAPI(Resource):
 
     def get(self, search_key):
         db = Database()
-        confs = db.search_confs(search_key + "%")
+        confs = db.search_confs("%" + search_key + "%")
         for conf in confs:
             if conf['type'] == 1:
                 conf['type'] = 'conference'
             else:
                 conf['type'] = 'journal'
         return {'confs': confs}
+
+class PaperSearchAPI(Resource):
+    #decorators = [auth.login_required]
+
+    def __init__(self):
+        super(PaperSearchAPI, self).__init__()
+
+    def get(self, search_key):
+        db = Database()
+        papers = db.search_papers("%" + search_key + "%")
+        for paper in papers:
+            if paper['read_date']:
+                paper['read_date'] = paper['read_date'].strftime('%Y/%m/%d %H:%M:%S')
+        return {'papers': papers}
 
 api.add_resource(ResearcherAPI, '/api/v1/researcher/<int:id>', endpoint='researcher')
 api.add_resource(ResearcherListAPI, '/api/v1/researchers', endpoint='researchers')
@@ -487,9 +654,10 @@ api.add_resource(PaperListAPI, '/api/v1/papers/<int:rid>', endpoint='papers')
 api.add_resource(PaperAPI, '/api/v1/paper/<int:id>', endpoint='paper')
 api.add_resource(PaperContributeAPI, '/api/v1/comment/<int:paper_id>', endpoint='comment')
 api.add_resource(ResearchAPI, '/api/v1/research/<int:id>', endpoint='research')
+api.add_resource(ExperimentAPI, '/api/v1/experiment/<int:research_id>', endpoint='experiment')
 api.add_resource(ConferenceAPI, '/api/v1/conf', endpoint='conf')
 api.add_resource(ConferenceSearchAPI, '/api/v1/conf/search/<string:search_key>')
-
+api.add_resource(PaperSearchAPI, '/api/v1/paper/search/<string:search_key>')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=38500)
