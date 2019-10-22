@@ -1,5 +1,6 @@
 export class Paper{
-    read_by: string = "1"
+    id: string = ""
+    read_by: string = ""
     title: string = ""
     authors: string = ""
     keys: string = ""
@@ -7,4 +8,5 @@ export class Paper{
     year: number = 2019
     abstract: string = ""
     comments: string = ""
+    research_id: number = 0
 }

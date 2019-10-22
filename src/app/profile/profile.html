@@ -1,0 +1,5 @@
+<div class="ui-block main-noti">
+    <p *ngIf="globals.userId == view_id">Showing only your papers</p>
+    <p *ngIf="globals.userId != view_id">Showing only papers posted by <span style="text-transform: uppercase">{{user.fullname}}</span></p>
+</div>
+<newfeeds></newfeeds>

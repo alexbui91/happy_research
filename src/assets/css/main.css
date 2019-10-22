@@ -140,19 +140,21 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
     padding-right: 70px; }
 
 .header {
-  height: 70px;
+  height: 50px;
   background-color: #3f4257;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 21; }
+  z-index: 21;
+  }
   .header .page-title {
-    padding: 26px 50px 26px 100px;
+    padding: 16px 50px 26px 100px;
     text-transform: uppercase;
     float: left;
     height: 100%;
-    min-width: 170px; }
+    min-width: 170px;
+    }
     .header .page-title > * {
       color: #fff;
       margin: 0; }
@@ -198,16 +200,19 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
 .search-bar {
   float: left;
   width: 500px;
-  height: 70px;
+  height: 50px;
   background-color: #494c62;
-  position: relative; }
+  position: relative;
+  }
   .search-bar.w-search {
     width: 500px;
-    min-height: 70px;
-    background-color: #494c62; }
+    min-height: 50px;
+    background-color: #494c62;
+    }
   .search-bar .form-group {
     margin-bottom: 0;
-    height: 70px; }
+    height: 50px;
+    }
   .search-bar .form-control {
     border: none;
     padding: 0; }
@@ -2763,11 +2768,14 @@ img {
   display: table;
   width: 100%;
   position: relative;
-  border-radius: 5px 5px 0 0; }
+  border-radius: 5px 5px 0 0; 
+  background:#f5f6f7
+}
   .ui-block-title .more {
     padding-left: 25px;
     text-align: right;
-    width: 16px; }
+    width: 16px;
+    }
   .ui-block-title > * {
     margin-bottom: 0;
     display: table-cell;
@@ -2777,7 +2785,8 @@ img {
     .ui-block-title.ui-block-title-small .title {
       font-size: 9px;
       text-transform: uppercase;
-      color: #9a9fbf; }
+      color: #333;
+      }
   .ui-block-title:first-child {
     border-top: none; }
   .ui-block-title .btn {
@@ -3251,7 +3260,8 @@ button:hover {
 
 /*------------- #FORMS --------------*/
 label.control-label {
-  color: #888da8; }
+  color: #212529;
+  }
 
 textarea {
   min-height: 132px; }
@@ -6470,11 +6480,14 @@ ol ol li {
     height: 40px;
     border-radius: 100%;
     overflow: hidden;
-    margin-right: 12px; }
+    margin-right: 12px;
+    border: 1px solid #ccc;
+    }
   .post__author .more {
     float: right;
     font-size: 16px;
-    margin-right: 20px; }
+    top: -10px;
+    }
 
 .post-additional-info {
   padding: 20px 0 0;
@@ -6741,7 +6754,10 @@ ol ol li {
   .comment-form .form-group {
     margin-bottom: 0;
     width: 100%;
-    margin-left: auto; }
+    margin-left: auto;
+    padding: 0;
+    border: none;
+    }
   .comment-form textarea {
     min-height: 60px;
     height: 60px;
@@ -11182,7 +11198,9 @@ ol ol li {
 .w-activity-feed .author-thumb {
   height: 28px;
   width: 28px;
-  float: left; }
+  float: left;
+  text-align: center;
+  }
   .w-activity-feed .author-thumb img {
     height: 28px;
     width: 28px;

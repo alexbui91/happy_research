@@ -13,12 +13,24 @@ import { Globals } from './globals';
 
 import {ResearchModal} from './components/research'
 import {LoginModal} from './components/login_modal'
+import { Profile } from './profile';
+import { ResearchPapers } from './research-papers';
+import { PaperDetail } from './paper-detail';
+import { PaperComponent } from './components/paper';
+import { Account } from './account';
+import { Researches } from './researches';
 
 @NgModule({
   declarations: [
     AppComponent,
     Home,
     NewFeeds,
+    Profile,
+    ResearchPapers,
+    PaperComponent,
+    PaperDetail,
+    Account,
+    Researches,
     ResearchModal,
     LoginModal
   ],

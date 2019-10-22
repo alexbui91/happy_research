@@ -16,27 +16,20 @@
             <label class="control-label">Goals <sup><i class='fa fa-asterisk required'></i></sup></label>
             <label class='has-error-line' *ngIf="researchNoti.goals"> - {{ researchNoti.goals }}</label>
             <div class="form-group" [ngClass]="{'has-error': researchNoti.goals}">
-                <textarea class="form-control" placeholder="Paste the abstract of the paper here" [(ngModel)]="researchNoti.goals" name="goals"></textarea>
+                <textarea class="form-control" placeholder="What are the main purposes of your research?" [(ngModel)]="research.goals" name="goals"></textarea>
             </div>
             <div class="row">
                 <div class="col col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                    <label class="control-label">Type</label>
-                    <div class="form-group">
-                        <select class="form-control" name="type" [(ngModel)]="research.type">
-                            <option value="1">Research</option>
-                            <option value="2">Project</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                    <label class="control-label">Start Date</label>
+                    <label class="control-label">Start Date <sup><i class='fa fa-asterisk required'></i></sup></label>
                     <form class="form-inline">
                         <div class="form-group">
                             <div class="input-group">
                                 <input class="form-control date-picker" placeholder="yyyy-mm-dd"
-                                        name="sdp" #c2="ngModel" [(ngModel)]="research.startDate" ngbDatepicker #sdp="ngbDatepicker">
+                                        name="sdp" [(ngModel)]="startDate" ngbDatepicker #sdp="ngbDatepicker">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary calendar" (click)="sdp.toggle()" type="button"><i class='fa fa-calendar-alt'></i></button>
+                                    <button class="btn btn-outline-secondary calendar" (click)="sdp.toggle()" type="button">
+                                        <!-- <i class='fa fa-calendar-alt'></i> -->
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -48,14 +41,26 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input class="form-control date-picker" placeholder="yyyy-mm-dd"
-                                        name="edp" #c2="ngModel" [(ngModel)]="research.endDatePlan" ngbDatepicker #edp="ngbDatepicker">
+                                        name="edp" [(ngModel)]="endDate" ngbDatepicker #edp="ngbDatepicker">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary calendar" (click)="edp.toggle()" type="button"><i class='fa fa-calendar-alt'></i></button>
+                                    <button class="btn btn-outline-secondary calendar" (click)="edp.toggle()" type="button">
+                                        <!-- <i class='fa fa-calendar-alt'></i> -->
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+                <div class="col col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <label class="control-label">Type</label>
+                    <div class="form-group">
+                        <select class="form-control" name="type" [(ngModel)]="research.type">
+                            <option value="1">Research</option>
+                            <option value="2">Project</option>
+                        </select>
+                    </div>
+                </div>
+                <label class='has-error-line' *ngIf="researchNoti.start_date"> - {{ researchNoti.start_date }}</label>
             </div>
             
         </div>

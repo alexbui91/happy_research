@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12 m-auto">
+        <button class='btn btn-primary float-right' (click)="create()">Create Project/Research</button>
+        <table class="forums-table researches">
+            <thead>
+                <tr>
+                    <th class="">
+                        SEQ
+                    </th>
+
+                    <th class="topics">
+                        Name
+                    </th>
+
+                    <th class="freshness">
+                        Type
+                    </th>
+                    <th class="freshness">
+                        Start Date
+                    </th>
+                    <th class="freshness">
+                        End Date
+                    </th>
+                    <th class="freshness">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let res of researches; let i = index">
+                    <td class="">
+                        <span class="position bold">{{i + 1}}</span>
+                    </td>
+                    <td class="topics">
+                        <span class="type">{{res.name}}</span>
+                    </td>
+                    <td class="freshness">
+                        <span class='type' *ngIf="res.type == 1">Research</span>
+                        <span class='type' *ngIf="res.type == 2">Project</span>
+                    </td>
+                    <td class="freshness">
+                        <span class="date" *ngIf="res.start_date &&  res.start_date.length">{{res.start_date.slice(0, 10)}}</span>
+                    </td>
+                    <td class="freshness">
+                        <span class="date" *ngIf="res.end_date_plan && res.end_date_plan.length">{{res.end_date_plan.slice(0, 10)}}</span>
+                    </td>
+                    <td class="button">
+                        <button class="btn btn-primary btn-sm" (click)="edit(i, res.created_by)" [ngClass]="{'disabled': globals.userId != res.created_by}"><i class='fa fa-edit'></i></button>
+                        <button class="btn btn-danger btn-sm" (click)="delete(i, res.id, res.created_by)" [ngClass]="{'disabled': globals.userId != res.created_by}"><i class='fa fa-trash'></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

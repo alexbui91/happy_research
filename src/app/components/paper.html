@@ -1,0 +1,124 @@
+<article class="hentry post">
+    <div class='hentry-inner' [ngClass]="{'post-read-more': info.active}">
+        <div class="post__author author vcard inline-items">
+            <img [src]="'assets/img/avatar/'+info.read_by+'.jpg'" alt="author">
+
+            <div class="author-date">
+                <div>
+                    <a class="h6 post__author-name fn" [routerLink]="['/profile', info.read_by]">
+                        {{info.fullname}}&nbsp;
+                    </a>
+                    <span *ngIf="info.research_name" class='project-title'>posted a paper in <a [routerLink]="['/research-papers', info.research_id]" class='link-button'>{{info.research_name}}</a></span>
+                </div>
+                <div class="post__date">
+                    <time class="published">
+                        {{info.read_date}}
+                    </time>
+                </div>
+            </div>
+
+            <div class="more" *ngIf="globals.userId == info.read_by">
+                <svg class="olymp-three-dots-icon">
+                    <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+                </svg>
+                <ul class="more-dropdown">
+                    <li class='link-button'>
+                        <a (click)="editPaper(i, info)">Edit Post</a>
+                    </li>
+                    <li class='link-button'>
+                        <a (click)="removePaper(i, info)">Delete Post</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <p><i class="fa fa-file-signature"></i>&nbsp;<b>Title:</b>&nbsp;<a [routerLink]="['/paper-detail', info.id]">{{info.title}}</a></p>
+        <p><i class="fa fa-users"></i>&nbsp;<b>Authors:</b> {{info.authors}}</p>
+        <p><i class="fa fa-calendar-alt"></i>&nbsp;<b>Year:</b> {{info.year}}</p>
+        <p><i class="fa fa-book"></i>&nbsp;<b>Conference/Journal:</b> {{info.conference}}</p>
+        <p><i class="fa fa-file-alt"></i>&nbsp;
+            <b>Abstract:</b><br>
+            <span [innerHtml]="info.showing_abstract">
+            </span>
+            &nbsp;<span *ngIf="!is_showmore && info.active && !info.comments" (click)="showMore(info)" class='link-button'><i
+                    class="fa fa-angle-up"></i> Show less</span>
+        </p>
+        <p *ngIf="info.active && info.comments">
+            <i class="fa fa-comments"></i> &nbsp;<b>Comments:&nbsp;</b><br>
+            <span [innerHTML]="info.comments"></span>
+            &nbsp;<span *ngIf="!is_showmore && info.active && info.comments" (click)="showMore(info)" class='link-button'><i
+                    class="fa fa-angle-up"></i> Show less</span>
+        </p>
+        <p class="read-more" (click)="showMore(info)">
+            <span *ngIf="!is_showmore && !info.active"><i class="fa fa-angle-down"></i> Show more</span>
+            <!-- <span *ngIf="info.active"><i class="fa fa-angle-up"></i> Show less</span> -->
+        </p>
+    </div>
+    <!-- <div class="post-additional-info inline-items read-more-wrapper">
+        <div class="read-more" (click)="showMore(info)">
+            <span *ngIf="!info.active"><i class="fa fa-angle-down"></i> Show more</span>
+            <span *ngIf="info.active"><i class="fa fa-angle-up"></i> Show less</span>
+        </div>
+    </div> -->
+</article>
+<a (click)="viewMoreComments(info)" class="link-button more-comments">View comments <span>+</span></a>
+<!-- Comments -->
+<ul class="comments-list" *ngIf="info.list_comments && info.list_comments.length">
+    <li class="comment-item" *ngFor="let c of info.list_comments; let i = index">
+        <div class="post__author author vcard inline-items">
+            <img [src]="'assets/img/avatar/' + c.researcher_id + '.jpg'" alt="author">
+
+            <div class="author-date">
+                <!-- [routerLink]="[ '/profile', c.userId ]" -->
+                <a class="h6 post__author-name fn">{{c.fullname}}</a>
+                <div class="post__date">
+                    <time class="published" datetime="2004-07-24T18:18">
+                        {{c.calculated_time}}
+                    </time>
+                </div>
+            </div>
+            <div class="more" *ngIf="c.researcher_id == globals.userId">
+                <svg class="olymp-three-dots-icon">
+                    <use xlink:href="assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+                </svg>
+                <ul class="more-dropdown">
+                    <li class='link-button'>
+                        <a (click)="editComment(info.id, c)">Edit Comment</a>
+                    </li>
+                    <li class='link-button'>
+                        <a (click)="removeComment(i, info, c)">Delete Comment</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <p class='comment-content' *ngIf="!c.is_edit" [innerHtml]="c.comment">
+        </p>
+        <div class="form-group comment-form" *ngIf="c.is_edit">
+            <div class='edit-comment-form reply-form' contenteditable="true" [innerHtml]="c.comment"
+                (input)="c.edited_comment=$event.target.innerHTML"
+                (keydown)="editCommentAction(i, $event, c, info)" id="comment_{{info.id}}_{{c.id}}"
+                (paste)="globals.getPasteText($event);"></div>
+            <div class='placeholder' *ngIf="!c.comment">Enter your comments</div>
+            <!-- <textarea class="form-control edit-comment-form" rows="3" (keydown)="editCommentAction($event, c)" name="comment_{{i}}" [(ngModel)]="c.comment"></textarea> -->
+        </div>
+    </li>
+</ul>
+
+<!-- ... end Comments -->
+
+<!-- Comment Form  -->
+
+<form class="comment-form inline-items">
+    <div class="post__author author vcard inline-items">
+        <img [src]="'assets/img/avatar/'+info.read_by+'.jpg'" alt="author">
+        <div class="form-group comment-form">
+            <div contenteditable="true" class='edit-comment-form' [innerHtml]="info.comment"
+                (input)="info.newComment=$event.target.innerHTML" (keydown)="commentKeyDown(info, $event)"></div>
+            <div class='placeholder' *ngIf="!info.newComment">Enter your comments</div>
+            <!-- <textarea class="form-control" placeholder="Enter your comment" (keydown)="commentKeyDown(info, $event)" name="newComment" [(ngModel)]="info.newComment"></textarea> -->
+        </div>
+    </div>
+</form>
