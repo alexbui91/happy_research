@@ -18,9 +18,9 @@ export class AppComponent {
     isShowSearchBox: boolean = false
     selectedDate:  NgbDateStruct
     constructor(private globals: Globals, private rmodal: NgbModal, private services: Services, private calendar: NgbCalendar) {
+        this.globals.page_class_style = ""
         this.globals.loadToken()
         this.selectedDate = this.calendar.getToday()
-        console.log(this.selectedDate)
         this.services.getConferences().subscribe(
             res => {
                 let obj = res["confs"]

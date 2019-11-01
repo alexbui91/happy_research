@@ -21,9 +21,12 @@ export class NewFeeds{
 
     constructor(private services: Services, private globals: Globals, private route: Router){
         this.globals.page_type = 1
-        if(this.auto){
-            this.getPapers()
-        }
+        setTimeout(() => {
+            if(this.auto){
+                this.getPapers()
+            }    
+        }, 100);
+        
         window.scrollTo(0,0)
     }
     ngAfterViewInit(): void {
@@ -64,7 +67,7 @@ export class NewFeeds{
                     this.paper_form.comment_display = this.paper.comments
                     this.paper_form.title.nativeElement.focus()
                 }
-            }, 500);
+            }, 100);
             // for(let x in this.paper){
             //     this.paper[x] = p[x]
             //     this.abstract_display = p["abstract"]

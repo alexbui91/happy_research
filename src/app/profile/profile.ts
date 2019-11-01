@@ -19,6 +19,7 @@ export class Profile implements AfterViewInit{
         this.globals.page_type = 1
         this.route.params.subscribe((params: Params) => {
             this.view_id = params["id"]
+            console.log(this.view_id)
             this.services.getUserInfo(this.view_id).subscribe(
                 res => {
                     this.user["id"] = res["researcher"]["id"]

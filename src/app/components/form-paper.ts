@@ -78,7 +78,7 @@ export class PaperForm {
     confOut(){
         setTimeout(()=>{
             this.isShowConfSearch = false
-        }, 500)
+        }, 150)
     }
     confIn(){
         this.isShowConfSearch = true
