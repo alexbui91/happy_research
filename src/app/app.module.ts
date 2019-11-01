@@ -11,6 +11,7 @@ import {Home} from './home/index'
 import {NewFeeds} from './newfeeds/index'
 import { Globals } from './globals';
 
+import { PaperForm } from './components/form-paper'
 import {ResearchModal} from './components/research'
 import {LoginModal} from './components/login_modal'
 import { Profile } from './profile';
@@ -19,6 +20,7 @@ import { PaperDetail } from './paper-detail';
 import { PaperComponent } from './components/paper';
 import { Account } from './account';
 import { Researches } from './researches';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { Researches } from './researches';
     Account,
     Researches,
     ResearchModal,
-    LoginModal
+    LoginModal,
+    PaperForm
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,6 @@ import { Researches } from './researches';
   ],
   providers: [Globals],
   bootstrap: [AppComponent],
-  entryComponents: [ResearchModal, LoginModal]
+  entryComponents: [ResearchModal, LoginModal, PaperForm]
 })
 export class AppModule { }

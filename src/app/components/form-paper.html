@@ -1,0 +1,112 @@
+<div class="ui-block" *ngIf="globals.token">
+
+    <!-- News Feed Form  -->
+    <div class="ui-block-title">
+        <h6 class="title" *ngIf="!paper.id">Create new paper summary</h6>
+        <h6 class="title" *ngIf="paper.id">Edit paper "{{paper.title}}"</h6>
+        <div class="more">
+            <a class='link-button' (click)="cancelEditPaper()"><i class='fa fa-window-close'></i></a>
+        </div>
+    </div>
+    <div class="ui-block-content paper-form-wrapper">
+        <div class="row">
+            <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <label class="control-label">Paper Title <sup><i class='fa fa-asterisk required'></i></sup></label>
+                <label class='has-error-line' *ngIf="paperNoti.title"> - {{ paperNoti.title }}</label>
+                <div class="form-group" [ngClass]="{'has-error': paperNoti.title}">
+                    <input class="form-control" type="text" placeholder="Ex. A Deep learning approach for ..."
+                        [(ngModel)]="paper.title" name="title" #title>
+                </div>
+                <div class='row'>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Authors <sup><i class='fa fa-asterisk required'></i></sup></label>
+                        <label class='has-error-line' *ngIf="paperNoti.authors"> - {{ paperNoti.authors }}</label>
+                        <div class="form-group" [ngClass]="{'has-error': paperNoti.authors}">
+                            <input type="text" class="form-control" placeholder="Ex. Andrew Ng., Ian Goodfellow"
+                                [(ngModel)]="paper.authors" name="authors">
+                        </div>
+                    </div>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Year of publication <sup><i
+                                    class='fa fa-asterisk required'></i></sup></label>
+                        <label class='has-error-line' *ngIf="paperNoti.year"> - {{ paperNoti.year }}</label>
+                        <div class="form-group" [ngClass]="{'has-error': paperNoti.year}">
+                            <input type="text" class="form-control" placeholder="Ex. 2019" [(ngModel)]="paper.year"
+                                name="year">
+                        </div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label">Keys</label>
+                        <div class="form-group">
+                            <input type="text" class="form-control"
+                                placeholder="Deep Learning, Graph Convolutional Networks" [(ngModel)]="paper.keys"
+                                name="keys">
+                        </div>
+                    </div>
+                    <div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label class="control-label"><a (click)="toProject()">Project/Research</a></label>
+                        <button class='btn btn-purple btn-circle' (click)="openResearchModal()"><i
+                                class='fa fa-plus'></i></button>
+                        <div class="form-group">
+                            <select class="form-control" [(ngModel)]="paper.research_id" name="research_id">
+                                <option value="{{r.id}}" *ngFor="let r of researches">{{r.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="control-label">Conference/Journal name <sup><i
+                            class='fa fa-asterisk required'></i></sup></label>
+                <label class='has-error-line' *ngIf="paperNoti.conference"> - {{ paperNoti.conference }}</label>
+                <div class="form-group autocomplete-form" [ngClass]="{'has-error': paperNoti.conference}">
+                    <input type="text" class="form-control"
+                        placeholder="Ex. ICDE or International Conference of Data Engineering"
+                        [(ngModel)]="paper.conference" name="conference" (keyup)="autoCompleteConf($event)"
+                        (focus)="confIn()" (focusout)="confOut()">
+                    <div class="autocomplete"
+                        [ngClass]="{'show': (isShowConfSearch && conferences.length), 'hide': (!isShowConfSearch || !conferences.length)}">
+                        <ul class="dropdown-menu">
+                            <li class="" *ngFor="let conf of conferences">
+                                <a class="link-button dropdown-item"
+                                    (click)="paper.conference = conf.name; conferences=[]">
+                                    [{{conf.abbr}}] {{conf.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <label class="control-label">Abstract <sup><i class='fa fa-asterisk required'></i></sup></label>
+                <label class='has-error-line' *ngIf="paperNoti.abstract"> - {{ paperNoti.abstract }}</label>
+                <div class="form-group" [ngClass]="{'has-error': paperNoti.abstract}">
+                    <div class='comment-form'>
+                        <div class='edit-comment-form' contenteditable="true"
+                            [ngClass]="{'has-error': paperNoti.abstract}" [innerHtml]="abstract_display"
+                            (input)="paper.abstract=$event.target.innerHTML" (paste)="globals.getPasteText($event);">
+                        </div>
+                        <div class='placeholder' *ngIf="!paper.abstract">Paste the abstract of the paper here</div>
+                    </div>
+                    <!-- <textarea class="form-control" placeholder="Paste the abstract of the paper here"
+                        [(ngModel)]="paper.abstract" name="abstract"></textarea> -->
+                </div>
+
+                <label class="control-label">Comments</label>
+                <div class="form-group">
+                    <div class='comment-form'>
+                        <div class='edit-comment-form' contenteditable="true" [innerHtml]="comment_display"
+                            (input)="paper.comments=$event.target.innerHTML" (paste)="globals.getPasteText($event)">
+                        </div>
+                        <div class='placeholder' *ngIf="!paper.comments">Enter your comments</div>
+                    </div>
+                    <!--                    
+                    <textarea class="form-control" placeholder="You can tell your own ideas"
+                        [(ngModel)]="paper.comments" name="comments"></textarea> -->
+                </div>
+                <button (click)="savePaper()" class="btn btn-purple btn-lg full-width">Submit<div
+                        class="ripple-container"></div></button>
+            </div>
+        </div>
+    </div>
+</div>

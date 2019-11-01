@@ -8,7 +8,7 @@ const httpOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class Services{
-    private url = 'http://147.46.89.141:38500/api/v1'
+    private url = 'http://147.47.206.14:38500/api/v1'
     private headers: Headers = new Headers({'Content-Type': 'application/json'});
     constructor(private http: HttpClient){
 

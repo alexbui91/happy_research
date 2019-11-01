@@ -10,6 +10,8 @@ export class Globals{
     fullname: string = ""
     duration: number = 600
     page_type: number = 1
+    page_class_style : string = ""
+    
     saveToken(){
         localStorage.setItem("token", this.token)
         localStorage.setItem("userId", this.userId)

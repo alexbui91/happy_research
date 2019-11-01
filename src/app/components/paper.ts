@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { Paper } from '../models/paper';
 import { Globals } from '../globals';
 import { Services } from '../app.services';
+import { Router } from '@angular/router';
 @Component({
     selector: 'paper',
     templateUrl: 'paper.html'
@@ -12,7 +13,7 @@ export class PaperComponent {
     @Input("showmore") is_showmore: boolean = true
     @Output() onEdit: EventEmitter<any> = new EventEmitter()
 
-    constructor(private globals: Globals, private services: Services){
+    constructor(private globals: Globals, private services: Services, private route: Router){
     }
 
     // strim shorter paragraph to display
@@ -39,7 +40,10 @@ export class PaperComponent {
             this.services.removePaper(id, uid).subscribe(
                 res => {
                     if(!res["error"]){
-                        this.papers.splice(idx, 1)
+                        if(this.papers)
+                            this.papers.splice(idx, 1)
+                        else
+                            this.route.navigate(["/newfeeds"])
                     }else{
                         p["clicked_delete"] = false
                     }

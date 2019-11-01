@@ -177,6 +177,9 @@ a:hover{
     border: none;
     height: 100px;
 }
+.paper-detail .paper-form-wrapper .comment-form{
+    height: 300px;
+}
 .comment-form .edit-comment-form{
     height: 100%;
     overflow: auto

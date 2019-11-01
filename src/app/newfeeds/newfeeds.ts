@@ -1,10 +1,9 @@
-import {Component, OnInit, Input, ViewChild, ElementRef, Inject} from "@angular/core"
+import {Component, ViewChild} from "@angular/core"
 import { Services } from '../app.services'
 import {Paper} from '../models/paper'
-import {PaperNotification} from '../models/paper.noti'
-import {ResearchModal} from '../components/research'
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { Globals } from '../globals'
+import { Router } from '@angular/router'
+import { PaperForm } from '../components/form-paper'
 // import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -17,48 +16,20 @@ export class NewFeeds{
     auto: boolean = true
     paper: Paper = new Paper()
     papers: Array<any> = []
-    researches: Array<any> = []
-    abstract_display: String = new String("")
-    comment_display: String = new String("")
-    conferences: Array<object> = []
-    isShowConfSearch: boolean = false
-    paperNoti: PaperNotification = new PaperNotification()
-    @ViewChild("title", {static: false}) title: ElementRef;
-    constructor(private services: Services, private rmodal: NgbModal, private globals: Globals){
+    
+    @ViewChild(PaperForm, {static: false}) paper_form: PaperForm 
+
+    constructor(private services: Services, private globals: Globals, private route: Router){
         this.globals.page_type = 1
         if(this.auto){
             this.getPapers()
         }
-        this.services.getResearches().subscribe(
-            res => {
-                if(res[0]["researches"]){
-                    this.researches = res[0]["researches"]
-                }
-            }
-        )
         window.scrollTo(0,0)
     }
-    autoCompleteConf(e: any){
-        let s = e.target.value.trim().toLowerCase()
-        this.services.autoCompleteConf(s).subscribe(
-            res => {
-                let obj = res["confs"]
-                obj = obj as any[]
-                if(obj.length > 20){
-                    obj.splice(20, obj.length - 20)
-                    this.conferences = obj
-                }else
-                    this.conferences = obj 
-            }
-        )
-    }
-    confOut(){
-        setTimeout(()=>{
-            this.isShowConfSearch = false
-        }, 500)
-    }
-    confIn(){
-        this.isShowConfSearch = true
+    ngAfterViewInit(): void {
+        //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+        //Add 'implements AfterViewInit' to the class.
+    
     }
     // get papers with user id or get all papers
     getPapers(){
@@ -79,108 +50,28 @@ export class NewFeeds{
         this.papers = papers
     }
 
-    // validate paper submission form
-    validatePaper() {
-        let b = false
-        if(!this.globals.userId || !this.globals.token){
-            b = true
-        }
-        if(!this.paper.title){
-            this.paperNoti.title = "Title must not be empty"
-            b = true
-        }
-        if(!this.paper.authors){
-            this.paperNoti.authors =  "Authors must not be empty"
-            b = true
-        }
 
-        if(!this.paper.conference){
-            this.paperNoti.conference =  "Conference must not be empty"
-            b = true
-        }
-            
-        if(!this.paper.year){
-            this.paperNoti.year = "Year of publication must not be empty"
-            b = true
-        }
-            
-        let now = new Date().getFullYear()
-        if(isNaN(parseInt(this.paper.year + ""))|| this.paper.year < 1960 || this.paper.year > now){
-            this.paperNoti.year =  "Year of publication must be from 1960 to now"
-            b = true
-        }
-        if(!this.paper.abstract){
-            this.paperNoti.abstract = "Abstract must not be empty"
-            b = true
-        }
-            
-        if(this.paper.abstract.length > 10000){
-            this.paperNoti.abstract = "Abstract must not exceed 10.000 characters"
-            b = true
-        }
-            
-        return b
-    }
-
-    // submit summarization
-    savePaper(){
-        if(!this.validatePaper()){
-            this.paper.read_by = this.globals.userId
-            let obj = JSON.parse(JSON.stringify(this.paper))
-            this.paperNoti = new PaperNotification()
-            if(obj.id){
-                this.services.updatePaper(obj).subscribe(
-                    res => {
-                        if(res["id"]){
-                            this.synchronizeLocalPaper(this.paper)
-                            this.paper = new Paper()
-                            this.abstract_display = new String("")
-                            this.comment_display = new String("")
-                        }
-                    }
-                )
-            }else{
-                this.services.submitPaper(obj).subscribe(
-                    res => {
-                        if(res["id"]){
-                            this.synchronizeLocalPaper(this.paper)
-                            this.paper = new Paper()
-                            this.abstract_display = new String("")
-                            this.comment_display = new String("")
-                        }
-                    }
-                )
-            }
-            
-        }
-    }
-
-    synchronizeLocalPaper(p: Paper){
+    synchronizeLocalPaper(x: number, p: any){
         this.getPapers()
-    }
-
-    openResearchModal(){
-        const modalRef = this.rmodal.open(ResearchModal)
-        modalRef.result.then((data) => {
-            this.researches.splice(0, 0, data["obj"])
-        }, ()=>{})
     }
 
     editPaper(idx: number, p: any){
         if(p.read_by == this.globals.userId){
-            for(let x in this.paper){
-                this.paper[x] = p[x]
-                this.abstract_display = p["abstract"]
-                this.comment_display = p["comments"]
-                this.title.nativeElement.focus()
-            }
+            setTimeout(() => {
+                if(this.paper_form){
+                    this.paper = p
+                    this.paper_form.abstract_display = this.paper.abstract
+                    this.paper_form.comment_display = this.paper.comments
+                    this.paper_form.title.nativeElement.focus()
+                }
+            }, 500);
+            // for(let x in this.paper){
+            //     this.paper[x] = p[x]
+            //     this.abstract_display = p["abstract"]
+            //     this.comment_display = p["comments"]
+            //     this.title.nativeElement.focus()
+            // }
         }
-    }
-
-    cancelEditPaper(){
-        this.paper = new Paper()
-        this.abstract_display = new String("")
-        this.comment_display = new String("")
     }
 
     // strim shorter paragraph to display

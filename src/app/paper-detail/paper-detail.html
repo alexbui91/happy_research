@@ -1,3 +1,4 @@
-<div class="ui-block">
-    <paper [info]="paper"></paper>
+<form-paper [paper]="paper" *ngIf="isShowEditForm" (cancelEdit)="isShowEditForm = false;"></form-paper>
+<div class="ui-block" *ngIf="!isShowEditForm">
+    <paper [info]="paper" (onEdit)="editPaper($event[0], $event[1])"></paper>
 </div>
